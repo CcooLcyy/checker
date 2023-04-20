@@ -35,6 +35,8 @@ class Data():
         else:
             savePath = saveDirPath + '/datasets.npz'
             np.savez(savePath, image = self.image, label = self.label)
+            self.image = None
+            self.label = None
         return savePath
     
     def loadUnMarkedDataByDir(self):
