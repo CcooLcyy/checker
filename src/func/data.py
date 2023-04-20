@@ -26,11 +26,16 @@ class Data():
                     sumImage.append(image)
                     sumLabel.append(label)
             self.image, self.label = sumImage, sumLabel
+        return folderPath
 
     def saveMarkedDataset(self):
         saveDirPath = self.file.selectDirPath()
-        savePath = saveDirPath + '/datasets.npz'
-        np.savez(savePath, image = self.image, label = self.label)
+        if saveDirPath == '':
+            pass
+        else:
+            savePath = saveDirPath + '/datasets.npz'
+            np.savez(savePath, image = self.image, label = self.label)
+        return savePath
     
     def loadUnMarkedDataByDir(self):
         '''
@@ -39,9 +44,12 @@ class Data():
         filePath = self.file.selectDirPath()
 
     def saveMarkedImage(self):
+        '''
+        未完成
+        '''
         filePath = self.file.selectDirPath()
 
 if __name__ == '__main__':
     test = Data()
     test.loadMarkedImageByDir()
-    # test.saveMarkedDataset()
+    test.saveMarkedDataset()

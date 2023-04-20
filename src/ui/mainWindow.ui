@@ -16,27 +16,14 @@
   <widget class="QPushButton" name="toDataWindowButton">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>30</y>
+     <x>20</x>
+     <y>10</y>
      <width>75</width>
      <height>23</height>
     </rect>
    </property>
    <property name="text">
     <string>数据处理</string>
-   </property>
-  </widget>
-  <widget class="QPlainTextEdit" name="showing">
-   <property name="geometry">
-    <rect>
-     <x>430</x>
-     <y>90</y>
-     <width>181</width>
-     <height>271</height>
-    </rect>
-   </property>
-   <property name="readOnly">
-    <bool>true</bool>
    </property>
   </widget>
  </widget>
