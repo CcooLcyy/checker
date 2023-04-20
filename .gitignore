@@ -1,0 +1,8 @@
+# run env
+.vscode/
+
+# python
+*/*/__pycache__/
+
+# datasets
+datasets/*
