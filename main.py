@@ -67,10 +67,13 @@ class VoidWindow(QtWidgets.QMainWindow):
    
     def loadUnMarkedDataByDirSlot(self):
         path = self.dataWindow.data.loadUnMarkedDataByDir()
-        self.dataWindow.dataMarkOutputShow.appendPlainText('目录位置' + path)
+        if path == '':
+            self.dataWindow.dataMarkOutputShow.appendPlainText('未选取目录')
+        else:
+            self.dataWindow.dataMarkOutputShow.appendPlainText('目录位置' + path)
 
     def startMarkSlot(self):
-        self.dataWindow.imageMarkShow.close()
+        pass
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
