@@ -36,7 +36,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab_1">
     <attribute name="title">
@@ -89,9 +89,9 @@
      <property name="geometry">
       <rect>
        <x>370</x>
-       <y>10</y>
+       <y>39</y>
        <width>400</width>
-       <height>500</height>
+       <height>471</height>
       </rect>
      </property>
      <property name="readOnly">
@@ -126,6 +126,19 @@
        <string>保存</string>
       </property>
      </widget>
+    </widget>
+    <widget class="QPushButton" name="clearMsg">
+     <property name="geometry">
+      <rect>
+       <x>380</x>
+       <y>10</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>清除信息</string>
+     </property>
     </widget>
    </widget>
   </widget>

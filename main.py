@@ -22,9 +22,13 @@ class DataWindow(QtWidgets.QMainWindow):
 
         self.data = Data()
 
+        self.clearMsg.clicked.connect(self.clearMsgSlot)
         self.toMainWindowButton.clicked.connect(self.toMainWindow)
         self.loadMarkedImageByDir.clicked.connect(self.loadMarkedImageByDirSlot)
         self.saveMarkedDataset.clicked.connect(self.saveMarkedDatasetSlot)
+
+    def clearMsgSlot(self):
+        self.outputShow.clear()
 
     def toMainWindow(self):
         self.hide()
@@ -39,7 +43,7 @@ class DataWindow(QtWidgets.QMainWindow):
             self.outputShow.appendPlainText('未选取目录')
 
     def saveMarkedDatasetSlot(self):
-        if self.data.image == None:
+        if self.data.image == None and self.data.label == None:
             self.outputShow.appendPlainText('请先选择载入打标数据方式')
         else:
             path = self.data.saveMarkedDataset()

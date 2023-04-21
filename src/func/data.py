@@ -37,7 +37,7 @@ class Data():
             np.savez(savePath, image = self.image, label = self.label)
             self.image = None
             self.label = None
-        return savePath
+            return savePath
     
     def loadUnMarkedDataByDir(self):
         '''
