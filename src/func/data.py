@@ -43,6 +43,11 @@ class Data():
         filePath = self.file.selectDirPath()
         return filePath
 
+    def getImageData(self, fileName, folderPath):
+        filePath = os.path.join(folderPath, fileName)
+        image = cv2.imread(filePath)
+        return image
+
     def saveMarkedImage(self):
         '''
         未完成

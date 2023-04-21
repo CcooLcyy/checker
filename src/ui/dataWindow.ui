@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>dataPage</class>
- <widget class="QWidget" name="dataPage">
+ <class>dataPageWindow</class>
+ <widget class="QWidget" name="dataPageWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -91,7 +91,7 @@
       <string>清除信息</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="startMark">
+    <widget class="QPushButton" name="toDataMarkWindowButton">
      <property name="geometry">
       <rect>
        <x>10</x>

@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, uic
-import sys
+from PyQt5.QtGui import QImage, QPixmap
+import sys, os, cv2, time
 sys.path.append('src')
 from func.data import Data
 
@@ -11,16 +12,20 @@ class VoidWindow(QtWidgets.QMainWindow):
         self.stackedWidget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stackedWidget)
 
+        # 添加页面区
         self.mainWindow = uic.loadUi('src/ui/mainWindow.ui')
         self.dataWindow = uic.loadUi('src/ui/dataWindow.ui')
+        self.dataMarkWindow = uic.loadUi('src/ui/dataMarkWindow.ui')
 
-        # 添加页面区
         self.stackedWidget.addWidget(self.mainWindow)
         self.stackedWidget.addWidget(self.dataWindow)
+        self.stackedWidget.addWidget(self.dataMarkWindow)
 
         # 跳转页面信号区
         self.mainWindow.toDataWindowButton.clicked.connect(self.toDataWindowSlot)
         self.dataWindow.toMainWindowButton.clicked.connect(self.toMainWindowSlot)
+        self.dataWindow.toDataMarkWindowButton.clicked.connect(self.toDataMarkWindowSlot)
+        self.dataMarkWindow.toDataWindowButton.clicked.connect(self.toDataWindowSlot)
 
         # mainWindow信号区
 
@@ -32,8 +37,12 @@ class VoidWindow(QtWidgets.QMainWindow):
         self.dataWindow.loadMarkedImageByDir.clicked.connect(self.loadMarkedImageByDirSlot)
         self.dataWindow.saveMarkedDataset.clicked.connect(self.saveMarkedDatasetSlot)
         self.dataWindow.loadUnMarkedDataByDir.clicked.connect(self.loadUnMarkedDataByDirSlot)
-        self.dataWindow.startMark.clicked.connect(self.startMarkSlot)
 
+        # dataMarkWindow信号区
+        self.dataMarkWindow.imagePath = []
+        self.dataMarkWindow.imageCount = 0
+
+        self.dataMarkWindow.startShowUnmarkedImage.clicked.connect(self.saveImagePathInArraySlot)
 
     # 跳转页面槽函数
     def toDataWindowSlot(self):
@@ -41,6 +50,12 @@ class VoidWindow(QtWidgets.QMainWindow):
 
     def toMainWindowSlot(self):
         self.stackedWidget.setCurrentIndex(0)
+
+    def toDataMarkWindowSlot(self):
+        self.stackedWidget.setCurrentIndex(2)
+
+    def toDataWindowSlot(self):
+        self.stackedWidget.setCurrentIndex(1)
 
     # mainWindow槽函数
 
@@ -66,14 +81,29 @@ class VoidWindow(QtWidgets.QMainWindow):
             self.dataWindow.datasetCollectOutputShow.appendPlainText('文件保存完成：' + path)
    
     def loadUnMarkedDataByDirSlot(self):
-        path = self.dataWindow.data.loadUnMarkedDataByDir()
-        if path == '':
+        self.dataMarkWindow.path = self.dataWindow.data.loadUnMarkedDataByDir()
+        if self.dataMarkWindow.path == '':
             self.dataWindow.dataMarkOutputShow.appendPlainText('未选取目录')
         else:
-            self.dataWindow.dataMarkOutputShow.appendPlainText('目录位置' + path)
+            self.dataWindow.dataMarkOutputShow.appendPlainText('目录位置' + self.dataMarkWindow.path)
+    
+    # dataMarkWindow槽函数
+    def saveImagePathInArraySlot(self):
+        self.dataMarkWindow.path = self.dataMarkWindow.path
+        if self.dataMarkWindow.path == '':
+            pass
+        else:
+            for fileName in os.listdir(self.dataMarkWindow.path):
+                if fileName != 'Thumbs.db':
+                # 避免将系统缩略图文件导入其中
+                    self.dataMarkWindow.imagePath.append(self.dataMarkWindow.path + '/' + fileName)
+                    if len(self.dataMarkWindow.imagePath) == 1:
+                        image = self.dataWindow.data.getImageData(fileName, self.dataMarkWindow.path)
+                        height, width, channel = image.shape
+                        bytesPerLine = 3 * width
+                        qImg = QImage(image.data, width, height, bytesPerLine, QImage.Format_RGB888).rgbSwapped()
+                        self.dataMarkWindow.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
 
-    def startMarkSlot(self):
-        pass
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
