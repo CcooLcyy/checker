@@ -9,7 +9,6 @@ class MainWindow(QtWidgets.QMainWindow):
         uic.loadUi('src/ui/mainWindow.ui', self)
 
         self.toDataWindowButton.clicked.connect(self.toDataWindow)
-        
     def toDataWindow(self):
         self.hide()
         self.dataWindow = DataWindow()
@@ -22,32 +21,45 @@ class DataWindow(QtWidgets.QMainWindow):
 
         self.data = Data()
 
-        self.clearMsg.clicked.connect(self.clearMsgSlot)
+        self.clearDataMarkOutputShow.clicked.connect(self.clearDataMarkOutputShowSlot)
+        self.clearDatasetCollectOutputShow.clicked.connect(self.clearDatasetCollectOutputShowSlot)
         self.toMainWindowButton.clicked.connect(self.toMainWindow)
         self.loadMarkedImageByDir.clicked.connect(self.loadMarkedImageByDirSlot)
         self.saveMarkedDataset.clicked.connect(self.saveMarkedDatasetSlot)
-
-    def clearMsgSlot(self):
-        self.outputShow.clear()
-
+        self.loadUnMarkedDataByDir.clicked.connect(self.loadUnMarkedDataByDirSlot)
+        self.startMark.clicked.connect(self.startMarkSlot)
+    
+    def clearDataMarkOutputShowSlot(self):
+        self.dataMarkOutputShow.clear()
+    
+    def clearDatasetCollectOutputShowSlot(self):
+        self.datasetCollectOutputShow.clear()
+    
     def toMainWindow(self):
         self.hide()
         self.mainWindow = MainWindow()
         self.mainWindow.show()
-
+    
     def loadMarkedImageByDirSlot(self):
         path = self.data.loadMarkedImageByDir()
         if path != '':
-            self.outputShow.appendPlainText('已选取文件夹：' + path)
+            self.datasetCollectOutputShow.appendPlainText('已选取文件夹：' + path)
         else:
-            self.outputShow.appendPlainText('未选取目录')
-
+            self.datasetCollectOutputShow.appendPlainText('未选取目录')
+   
     def saveMarkedDatasetSlot(self):
         if self.data.image == None and self.data.label == None:
-            self.outputShow.appendPlainText('请先选择载入打标数据方式')
+            self.datasetCollectOutputShow.appendPlainText('请先选择载入打标数据方式')
         else:
             path = self.data.saveMarkedDataset()
-            self.outputShow.appendPlainText('文件保存完成：' + path)
+            self.datasetCollectOutputShow.appendPlainText('文件保存完成：' + path)
+   
+    def loadUnMarkedDataByDirSlot(self):
+        path = self.data.loadUnMarkedDataByDir()
+        self.dataMarkOutputShow.appendPlainText('目录位置' + path)
+
+    def startMarkSlot(self):
+        self.imageMarkShow.close()
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

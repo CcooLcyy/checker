@@ -40,10 +40,8 @@ class Data():
             return savePath
     
     def loadUnMarkedDataByDir(self):
-        '''
-        未完成
-        '''
         filePath = self.file.selectDirPath()
+        return filePath
 
     def saveMarkedImage(self):
         '''
