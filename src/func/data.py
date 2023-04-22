@@ -3,6 +3,7 @@ sys.path.append('src')
 from func.file import File
 import numpy as np
 import cv2
+from PyQt5.QtGui import QImage, QPixmap
 
 class Data():
     def __init__(self):
@@ -43,15 +44,14 @@ class Data():
         filePath = self.file.selectDirPath()
         return filePath
 
-    def getImageData(self, fileName, folderPath):
-        filePath = os.path.join(folderPath, fileName)
+    def imageShow(self, filePath):
         image = cv2.imread(filePath)
-        return image
+        height, width, channel = image.shape
+        bytesPerLine = 3 * width
+        qImg = QImage(image.data, width, height, bytesPerLine, QImage.Format_RGB888).rgbSwapped()
 
-    def saveMarkedImage(self):
-        '''
-        未完成
-        '''
+        return qImg
+
 
 if __name__ == '__main__':
     test = Data()

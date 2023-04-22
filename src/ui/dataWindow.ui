@@ -78,7 +78,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="clearDataMarkOutputShow">
+    <widget class="QPushButton" name="clearDataMarkOutputShowButton">
      <property name="geometry">
       <rect>
        <x>890</x>
@@ -91,11 +91,11 @@
       <string>清除信息</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="toDataMarkWindowButton">
+    <widget class="QPushButton" name="startShowUnmarkedImageButton">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>70</y>
+       <x>150</x>
+       <y>30</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -103,6 +103,59 @@
      <property name="text">
       <string>开始打标</string>
      </property>
+    </widget>
+    <widget class="QLabel" name="UnmarkedImageShow">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>80</y>
+       <width>300</width>
+       <height>300</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QWidget" name="">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>410</y>
+       <width>351</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="qualifiedProductButton">
+        <property name="text">
+         <string>合格品</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="AClassButton">
+        <property name="text">
+         <string>A类不合格品</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="BClassButton">
+        <property name="text">
+         <string>B类不合格品</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="CClassButton">
+        <property name="text">
+         <string>C类不合格品</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_2">
