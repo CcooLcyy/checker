@@ -97,6 +97,7 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
 
     def loadUnMarkedDataByDirSlot(self):
         self.loadImagePath = self.data.loadUnMarkedDataByDir()
+
         if self.loadImagePath == '':
             self.dataMarkOutputShow.appendPlainText('未选取目录')
         else:
@@ -109,13 +110,16 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
         else:
             QtWidgets.QMessageBox.information(self, '提示', '请选择打标数据保存的路径')
             self.savePath = self.data.file.selectDirPath()
-            for fileName in os.listdir(self.loadImagePath):
-                if fileName != 'Thumbs.db':
-                # 避免将系统缩略图文件导入其中
-                    self.imagePath.append(f'{self.loadImagePath}/{fileName}')
-                    if len(self.imagePath) == 1:
-                        qImg = self.data.imageShow(self.imagePath[self.imageCount])
-                        self.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
+            if self.savePath == '':
+                self.dataMarkOutputShow.appendPlainText('请选择一个打标数据保存路径')
+            else:
+                for fileName in os.listdir(self.loadImagePath):
+                    if fileName != 'Thumbs.db':
+                    # 避免将系统缩略图文件导入其中
+                        self.imagePath.append(f'{self.loadImagePath}/{fileName}')
+                        if len(self.imagePath) == 1:
+                            qImg = self.data.imageShow(self.imagePath[self.imageCount])
+                            self.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
 
 class VoidWindow(QtWidgets.QMainWindow):
     def __init__(self):
