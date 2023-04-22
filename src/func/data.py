@@ -52,7 +52,6 @@ class Data():
         '''
         未完成
         '''
-        filePath = self.file.selectDirPath()
 
 if __name__ == '__main__':
     test = Data()

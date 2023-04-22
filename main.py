@@ -39,6 +39,7 @@ class VoidWindow(QtWidgets.QMainWindow):
         self.dataWindow.loadUnMarkedDataByDir.clicked.connect(self.loadUnMarkedDataByDirSlot)
 
         # dataMarkWindow信号区
+        self.dataMarkWindow.data = Data()
         self.dataMarkWindow.imagePath = []
         self.dataMarkWindow.imageCount = 0
 
@@ -81,29 +82,29 @@ class VoidWindow(QtWidgets.QMainWindow):
             self.dataWindow.datasetCollectOutputShow.appendPlainText('文件保存完成：' + path)
    
     def loadUnMarkedDataByDirSlot(self):
-        self.dataMarkWindow.path = self.dataWindow.data.loadUnMarkedDataByDir()
-        if self.dataMarkWindow.path == '':
+        self.dataMarkWindow.loadImagePaht = self.dataWindow.data.loadUnMarkedDataByDir()
+        if self.dataMarkWindow.loadImagePaht == '':
             self.dataWindow.dataMarkOutputShow.appendPlainText('未选取目录')
         else:
-            self.dataWindow.dataMarkOutputShow.appendPlainText('目录位置' + self.dataMarkWindow.path)
+            self.dataWindow.dataMarkOutputShow.appendPlainText('目录位置' + self.dataMarkWindow.loadImagePaht)
     
     # dataMarkWindow槽函数
     def saveImagePathInArraySlot(self):
-        self.dataMarkWindow.path = self.dataMarkWindow.path
-        if self.dataMarkWindow.path == '':
+        self.dataMarkWindow.savePath = self.dataMarkWindow.data.file.selectDirPath()
+        self.dataMarkWindow.loadImagePaht = self.dataMarkWindow.loadImagePaht
+        if self.dataMarkWindow.loadImagePaht == '':
             pass
         else:
-            for fileName in os.listdir(self.dataMarkWindow.path):
+            for fileName in os.listdir(self.dataMarkWindow.loadImagePaht):
                 if fileName != 'Thumbs.db':
                 # 避免将系统缩略图文件导入其中
-                    self.dataMarkWindow.imagePath.append(self.dataMarkWindow.path + '/' + fileName)
+                    self.dataMarkWindow.imagePath.append(self.dataMarkWindow.loadImagePaht + '/' + fileName)
                     if len(self.dataMarkWindow.imagePath) == 1:
-                        image = self.dataWindow.data.getImageData(fileName, self.dataMarkWindow.path)
+                        image = self.dataWindow.data.getImageData(fileName, self.dataMarkWindow.loadImagePaht)
                         height, width, channel = image.shape
                         bytesPerLine = 3 * width
                         qImg = QImage(image.data, width, height, bytesPerLine, QImage.Format_RGB888).rgbSwapped()
                         self.dataMarkWindow.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
-
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
