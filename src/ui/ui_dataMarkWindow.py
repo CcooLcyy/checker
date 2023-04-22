@@ -19,9 +19,9 @@ class Ui_dataMarkWindow(object):
         self.UnmarkedImageShow.setGeometry(QtCore.QRect(30, 130, 400, 400))
         self.UnmarkedImageShow.setText("")
         self.UnmarkedImageShow.setObjectName("UnmarkedImageShow")
-        self.startShowUnmarkedImage = QtWidgets.QPushButton(dataMarkWindow)
-        self.startShowUnmarkedImage.setGeometry(QtCore.QRect(20, 50, 75, 23))
-        self.startShowUnmarkedImage.setObjectName("startShowUnmarkedImage")
+        self.startShowUnmarkedImageButton = QtWidgets.QPushButton(dataMarkWindow)
+        self.startShowUnmarkedImageButton.setGeometry(QtCore.QRect(20, 50, 75, 23))
+        self.startShowUnmarkedImageButton.setObjectName("startShowUnmarkedImageButton")
         self.toDataWindowButton = QtWidgets.QPushButton(dataMarkWindow)
         self.toDataWindowButton.setGeometry(QtCore.QRect(20, 10, 75, 23))
         self.toDataWindowButton.setObjectName("toDataWindowButton")
@@ -60,7 +60,7 @@ class Ui_dataMarkWindow(object):
     def retranslateUi(self, dataMarkWindow):
         _translate = QtCore.QCoreApplication.translate
         dataMarkWindow.setWindowTitle(_translate("dataMarkWindow", "数据打标"))
-        self.startShowUnmarkedImage.setText(_translate("dataMarkWindow", "开始打标"))
+        self.startShowUnmarkedImageButton.setText(_translate("dataMarkWindow", "开始打标"))
         self.toDataWindowButton.setText(_translate("dataMarkWindow", "回到上一页"))
         self.qualifiedProductButton.setText(_translate("dataMarkWindow", "合格品"))
         self.AClass.setText(_translate("dataMarkWindow", "A类不合格品"))
