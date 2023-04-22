@@ -29,8 +29,8 @@
   <widget class="QPushButton" name="startShowUnmarkedImage">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>40</y>
+     <x>20</x>
+     <y>50</y>
      <width>75</width>
      <height>23</height>
     </rect>
