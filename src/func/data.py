@@ -3,7 +3,7 @@ sys.path.append('src')
 from func.file import File
 import numpy as np
 import cv2
-from PyQt5.QtGui import QImage, QPixmap
+from PyQt5.QtGui import QImage
 
 class Data():
     def __init__(self):

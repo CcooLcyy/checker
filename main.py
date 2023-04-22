@@ -1,10 +1,9 @@
 from PyQt5 import QtWidgets, uic, QtCore
-from PyQt5.QtGui import QImage, QPixmap
-import sys, os, cv2, time
+from PyQt5.QtGui import QPixmap
+import sys, os
 sys.path.append('src')
 from func.data import Data
 from func.file import File
-from ui.ui_voidWindow import Ui_voidWindow
 from ui.ui_mainWindow import Ui_mainWindow
 from ui.ui_dataWindow import Ui_dataPageWindow
 
