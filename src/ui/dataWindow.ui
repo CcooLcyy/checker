@@ -10,255 +10,259 @@
     <height>800</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>1000</width>
+    <height>800</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1000</width>
+    <height>800</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>数据处理</string>
   </property>
-  <widget class="QPushButton" name="toMainWindowButton">
-   <property name="geometry">
-    <rect>
-     <x>20</x>
-     <y>10</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>回到主页</string>
-   </property>
-  </widget>
-  <widget class="QTabWidget" name="tabChange">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>40</y>
-     <width>980</width>
-     <height>750</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>0</number>
-   </property>
-   <widget class="QWidget" name="tab_1">
-    <attribute name="title">
-     <string>数据打标</string>
-    </attribute>
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>131</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>载入未打标数据方式</string>
-     </property>
-     <widget class="QPushButton" name="loadUnMarkedDataByDir">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>打开文件夹</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QPlainTextEdit" name="dataMarkOutputShow">
-     <property name="geometry">
-      <rect>
-       <x>570</x>
-       <y>40</y>
-       <width>400</width>
-       <height>690</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="clearDataMarkOutputShowButton">
-     <property name="geometry">
-      <rect>
-       <x>890</x>
-       <y>10</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>清除信息</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="startShowUnmarkedImageButton">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>30</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>开始打标</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="UnmarkedImageShow">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>300</width>
-       <height>300</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QWidget" name="">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>410</y>
-       <width>351</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QPushButton" name="qualifiedProductButton">
-        <property name="text">
-         <string>合格品</string>
-        </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="1" column="0">
+      <widget class="QTabWidget" name="tabChange">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_1">
+        <attribute name="title">
+         <string>数据打标</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>131</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>载入未打标数据方式</string>
+         </property>
+         <widget class="QPushButton" name="loadUnMarkedDataByDir">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>75</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>打开文件夹</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QPlainTextEdit" name="dataMarkOutputShow">
+         <property name="geometry">
+          <rect>
+           <x>570</x>
+           <y>40</y>
+           <width>400</width>
+           <height>690</height>
+          </rect>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="clearDataMarkOutputShowButton">
+         <property name="geometry">
+          <rect>
+           <x>890</x>
+           <y>10</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>清除信息</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="startShowUnmarkedImageButton">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>30</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>开始打标</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="UnmarkedImageShow">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>300</width>
+           <height>300</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+        <widget class="QWidget" name="layoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>410</y>
+           <width>351</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="qualifiedProductButton">
+            <property name="text">
+             <string>合格品</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="AClassButton">
+            <property name="text">
+             <string>A类不合格品</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="BClassButton">
+            <property name="text">
+             <string>B类不合格品</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="CClassButton">
+            <property name="text">
+             <string>C类不合格品</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="AClassButton">
-        <property name="text">
-         <string>A类不合格品</string>
-        </property>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>数据集收集</string>
+        </attribute>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>10</y>
+           <width>201</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="title">
+          <string>载入打标数据方式</string>
+         </property>
+         <property name="checkable">
+          <bool>false</bool>
+         </property>
+         <widget class="QPushButton" name="loadMarkedImageByDir">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>71</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="text">
+           <string>打开文件夹</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QPlainTextEdit" name="datasetCollectOutputShow">
+         <property name="geometry">
+          <rect>
+           <x>570</x>
+           <y>40</y>
+           <width>400</width>
+           <height>690</height>
+          </rect>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>70</y>
+           <width>201</width>
+           <height>51</height>
+          </rect>
+         </property>
+         <property name="title">
+          <string>保存文件为数据集</string>
+         </property>
+         <widget class="QPushButton" name="saveMarkedDataset">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>20</y>
+            <width>75</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string>保存</string>
+          </property>
+         </widget>
+        </widget>
+        <widget class="QPushButton" name="clearDatasetCollectOutputShow">
+         <property name="geometry">
+          <rect>
+           <x>890</x>
+           <y>10</y>
+           <width>75</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>清除信息</string>
+         </property>
+        </widget>
        </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="BClassButton">
-        <property name="text">
-         <string>B类不合格品</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="CClassButton">
-        <property name="text">
-         <string>C类不合格品</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tab_2">
-    <attribute name="title">
-     <string>数据集收集</string>
-    </attribute>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>201</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="layoutDirection">
-      <enum>Qt::LeftToRight</enum>
-     </property>
-     <property name="title">
-      <string>载入打标数据方式</string>
-     </property>
-     <property name="checkable">
-      <bool>false</bool>
-     </property>
-     <widget class="QPushButton" name="loadMarkedImageByDir">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>71</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>打开文件夹</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QPlainTextEdit" name="datasetCollectOutputShow">
-     <property name="geometry">
-      <rect>
-       <x>570</x>
-       <y>40</y>
-       <width>400</width>
-       <height>690</height>
-      </rect>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>70</y>
-       <width>201</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>保存文件为数据集</string>
-     </property>
-     <widget class="QPushButton" name="saveMarkedDataset">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>20</y>
-        <width>75</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-      <property name="text">
-       <string>保存</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QPushButton" name="clearDatasetCollectOutputShow">
-     <property name="geometry">
-      <rect>
-       <x>890</x>
-       <y>10</y>
-       <width>75</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>清除信息</string>
-     </property>
-    </widget>
-   </widget>
-  </widget>
-  <zorder>tabChange</zorder>
-  <zorder>toMainWindowButton</zorder>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QPushButton" name="toMainWindowButton">
+       <property name="text">
+        <string>回到主页</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

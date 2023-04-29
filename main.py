@@ -6,6 +6,7 @@ from func.data import Data
 from func.file import File
 from ui.ui_mainWindow import Ui_mainWindow
 from ui.ui_dataWindow import Ui_dataPageWindow
+from ui.ui_loginWindow import Ui_loginWindow
 
 class MainWindow(QtWidgets.QWidget, Ui_mainWindow):
     toDataWindowSignal = QtCore.pyqtSignal()
@@ -142,8 +143,21 @@ class VoidWindow(QtWidgets.QMainWindow):
     def toDataWindowSlot(self):
         self.stackedWidget.setCurrentIndex(1)
 
+class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.mainwindow = VoidWindow()
+
+        self.loginButton.clicked.connect(self.loginSlot)
+
+    def loginSlot(self):
+        self.close()
+        self.mainwindow.show()
+
+
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    mainWin = VoidWindow()
-    mainWin.show()
+    loginWindow = LoginWindow()
+    loginWindow.show()
     sys.exit(app.exec_())

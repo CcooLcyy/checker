@@ -15,9 +15,16 @@ class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
         mainWindow.setObjectName("mainWindow")
         mainWindow.resize(1000, 800)
+        mainWindow.setMinimumSize(QtCore.QSize(1000, 800))
+        mainWindow.setMaximumSize(QtCore.QSize(1000, 800))
+        self.gridLayout_2 = QtWidgets.QGridLayout(mainWindow)
+        self.gridLayout_2.setObjectName("gridLayout_2")
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.setObjectName("gridLayout")
         self.toDataWindowButton = QtWidgets.QPushButton(mainWindow)
-        self.toDataWindowButton.setGeometry(QtCore.QRect(20, 10, 75, 23))
         self.toDataWindowButton.setObjectName("toDataWindowButton")
+        self.gridLayout.addWidget(self.toDataWindowButton, 0, 0, 1, 1)
+        self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
         self.retranslateUi(mainWindow)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
