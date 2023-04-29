@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, uic, QtCore
 from PyQt5.QtGui import QPixmap
-import sys, os
+import sys, os, hashlib
 sys.path.append('src')
 from func.data import Data
 from func.file import File
@@ -150,11 +150,22 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
         self.mainwindow = VoidWindow()
 
         self.loginButton.clicked.connect(self.loginSlot)
+        self.cancelButton.clicked.connect(self.close)
 
     def loginSlot(self):
+        userName = self.userNameEdit.text()
+        password = self.passwordEdit.text()
+        passwordMd5 = self.md5_encrypt(password)
+        
+        print(f'{userName} {passwordMd5}')
         self.close()
         self.mainwindow.show()
 
+    def md5_encrypt(self, text):
+        msg = hashlib.md5()
+        msg.update(text.encode('utf-8'))
+
+        return msg.hexdigest()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
