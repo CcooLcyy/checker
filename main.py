@@ -156,10 +156,13 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
         userName = self.userNameEdit.text()
         password = self.passwordEdit.text()
         passwordMd5 = self.md5_encrypt(password)
-        
-        print(f'{userName} {passwordMd5}')
-        self.close()
-        self.mainwindow.show()
+        if userName == 'admin' and passwordMd5 == '21232f297a57a5a743894a0e4a801fc3':
+            self.close()
+            self.mainwindow.show()
+        elif userName == '' or password == '':
+            QtWidgets.QMessageBox.information(self, '警告！', '请输入账号密码！')
+        else:
+            QtWidgets.QMessageBox.information(self, '警告！', '账号或密码错误')
 
     def md5_encrypt(self, text):
         msg = hashlib.md5()
