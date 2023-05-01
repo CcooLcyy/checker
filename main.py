@@ -4,6 +4,7 @@ import sys, os, hashlib
 sys.path.append('src')
 from func.data import Data
 from func.file import File
+from func.mysql import Mysql
 from ui.ui_mainWindow import Ui_mainWindow
 from ui.ui_dataWindow import Ui_dataPageWindow
 from ui.ui_loginWindow import Ui_loginWindow
@@ -158,6 +159,14 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
         super().__init__()
         self.setupUi(self)
         self.mainwindow = VoidWindow()
+        self.sql = Mysql()
+
+        # if self.sql.installed == False:
+        reply = QtWidgets.QMessageBox.question(self, '警告！', '未安装数据库是否安装？', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+        if reply == QtWidgets.QMessageBox.Yes:
+            pass
+        elif reply == QtWidgets.QMessageBox.No:
+            exit()
 
         self.loginButton.clicked.connect(self.loginSlot)
         self.cancelButton.clicked.connect(self.close)
