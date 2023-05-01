@@ -129,7 +129,6 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
 class VoidWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('src/ui/voidWindow.ui', self)
 
         self.stackedWidget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stackedWidget)
