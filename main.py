@@ -10,13 +10,18 @@ from ui.ui_loginWindow import Ui_loginWindow
 
 class MainWindow(QtWidgets.QWidget, Ui_mainWindow):
     toDataWindowSignal = QtCore.pyqtSignal()
+    toLoginWindowSignal = QtCore.pyqtSignal()
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.toDataWindowButton.clicked.connect(self.toDataWindowSlot)
+        self.changeUserButton.clicked.connect(self.toLoginWindowSlot)
 
     def toDataWindowSlot(self):
         self.toDataWindowSignal.emit()
+    
+    def toLoginWindowSlot(self):
+        self.toLoginWindowSignal.emit()
 
 class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
     toMainWindowSignal = QtCore.pyqtSignal()
@@ -135,6 +140,7 @@ class VoidWindow(QtWidgets.QMainWindow):
         self.stackedWidget.addWidget(self.dataWindow)
 
         self.mainWindow.toDataWindowSignal.connect(self.toDataWindowSlot)
+        self.mainWindow.toLoginWindowSignal.connect(self.toLoginWindowSlot)
         self.dataWindow.toMainWindowSignal.connect(self.toMainWindowSlot)
 
     def toMainWindowSlot(self):
@@ -142,6 +148,11 @@ class VoidWindow(QtWidgets.QMainWindow):
 
     def toDataWindowSlot(self):
         self.stackedWidget.setCurrentIndex(1)
+
+    def toLoginWindowSlot(self):
+        self.close()
+        self.loginWindow = LoginWindow()
+        self.loginWindow.show()
 
 class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
     def __init__(self):

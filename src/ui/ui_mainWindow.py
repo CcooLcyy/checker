@@ -24,6 +24,9 @@ class Ui_mainWindow(object):
         self.toDataWindowButton = QtWidgets.QPushButton(mainWindow)
         self.toDataWindowButton.setObjectName("toDataWindowButton")
         self.gridLayout.addWidget(self.toDataWindowButton, 0, 0, 1, 1)
+        self.changeUserButton = QtWidgets.QPushButton(mainWindow)
+        self.changeUserButton.setObjectName("changeUserButton")
+        self.gridLayout.addWidget(self.changeUserButton, 1, 0, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
         self.retranslateUi(mainWindow)
@@ -33,3 +36,4 @@ class Ui_mainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         mainWindow.setWindowTitle(_translate("mainWindow", "主界面"))
         self.toDataWindowButton.setText(_translate("mainWindow", "数据处理"))
+        self.changeUserButton.setText(_translate("mainWindow", "切换用户"))
