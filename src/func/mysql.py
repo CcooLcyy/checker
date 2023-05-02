@@ -46,7 +46,7 @@ class Mysql():
     def __query(self, tableName, *columnName, **conditionName):
         columns = ', '.join(columnName)
         if len(conditionName) != 0:
-            condition = 'AND'.join(f"{key}='{value}'"for key, value in conditionName.items())
+            condition = ' AND '.join(f"{key}='{value}'"for key, value in conditionName.items())
             query = f"SELECT {columns} FROM {tableName} WHERE {condition}"
             self.cursor.execute(query)
             result = self.cursor.fetchall()
@@ -76,13 +76,17 @@ class Mysql():
         return result[0]
     
     def addUser(self, userName, password):
-        passwordMd5 = self.md5_encrypt(password)
-        self.__insert('user', user_name = userName, user_password = passwordMd5)
-        self.connection.commit()
+        if self.__query('user', 'user_name', user_name = f'{userName}'):
+            print('用户存在')
+        else:
+            passwordMd5 = self.md5_encrypt(password)
+            self.__insert('user', user_name = userName, user_password = passwordMd5)
+            self.connection.commit()
     
     def test(self):
-        print('test')
+        result = self.__query('user', 'user_name', user_id = 1, user_name = 'admin')
+        print(result)
 
 if __name__ == "__main__":
     sql = Mysql()
-    sql.addUser('test', 'test')
+    sql.test()
