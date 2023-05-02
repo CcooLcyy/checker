@@ -14,15 +14,14 @@ class Mysql():
             self.installed = True
             if self.connection != None:
                 self.cursor = self.connection.cursor()
-            self.verifyPassword('admin')
-        except TypeError:
-                self.__insert('user', user_id = 1, user_name = 'admin', user_password = self.md5_encrypt('admin'))
+            if not self.userExist('admin'):
+                self.__insert('user', {'user_id': '1', 'user_name': 'admin', 'user_password': f"{self.md5_encrypt('admin')}"})
                 self.__init__()
         except Exception as e:
             if e.args[0] == 2003:
                 self.installed = False
             elif e.args[0] == 1146:
-                self.__createTable('user', user_id = 'INT(32) NOT NULL AUTO_INCREMENT PRIMARY KEY', user_name = 'CHAR(32) NOT NULL', user_password = 'CHAR(32) NOT NULL')
+                self.__createTable('user', {'user_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 'user_name': 'CHAR(32)', 'user_password': 'CHAR(32)'})
             self.__init__()
 
     def __del__(self):
@@ -35,33 +34,39 @@ class Mysql():
     #     with zipfile.ZipFile(zipPath, 'r') as zip_ref:
     #         zip_ref.extractall(installPath)
 
-    def __insert(self, tableName, **keyValue):
-        columns = ', '.join(keyValue.keys())
-        placeholders = ', '.join(['%s'] * len(keyValue))
-        values = tuple(keyValue.values())
+    def __insert(self, tableName, row):
+        columns = ', '.join(row.keys())
+        placeholders = ', '.join(['%s'] * len(row))
+        values = tuple(row.values())
         insert = f"INSERT INTO {tableName} ({columns}) VALUES ({placeholders})"
         self.cursor.execute(insert, values)
         self.connection.commit()
 
-    def __query(self, tableName, *columnName, **conditionName):
-        columns = ', '.join(columnName)
-        if len(conditionName) != 0:
-            condition = ' AND '.join(f"{key}='{value}'"for key, value in conditionName.items())
-            query = f"SELECT {columns} FROM {tableName} WHERE {condition}"
-            self.cursor.execute(query)
-            result = self.cursor.fetchall()
-            return result
+    def __query(self, table_name, *column_names, conditions=None):
+        columns_str = ', '.join(column_names)
+        if conditions:
+            conditions_str = ' AND '.join([f"{key} = %s" for key in conditions.keys()])
+            sql = f"SELECT {columns_str} FROM {table_name} WHERE {conditions_str}"
+            values = tuple(conditions.values())
+            self.cursor.execute(sql, values)
         else:
-            query = f"SELECT {columns} FROM {tableName}"
-            self.cursor.execute(query)
-            result = self.cursor.fetchall()
-            return result
+            sql = f"SELECT {columns_str} FROM {table_name}"
+            self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        return result
+
+    def __createTable(self, table_name, columns):
+        columns_str = ', '.join([f"{column_name} {column_type}" for column_name, column_type in columns.items()])
+        sql = f"CREATE TABLE {table_name} ({columns_str})"
+        self.cursor.execute(sql)
+        self.connection.commit()
     
-    def __createTable(self, tableName, **tableColumns):
-        columns = ', '.join([f"{column} NOT NULL" for column in tableColumns.values()])
-        variables = ', '.join(f"{columnName}" for columnName in tableColumns.keys())
-        result = ', '.join([f"{var} {column}" for var, column in zip(variables.split(', '), columns.split(', '))])
-        self.cursor.execute(f"CREATE TABLE {tableName}({result})")
+    def __update(self, table_name, data, condition):
+        set_values = ', '.join([f"{key} = %s" for key in data.keys()])
+        condition_str = ' AND '.join([f"{key} = %s" for key in condition.keys()])
+        sql = f"UPDATE {table_name} SET {set_values} WHERE {condition_str}"
+        values = list(data.values()) + list(condition.values())
+        self.cursor.execute(sql, values)
         self.connection.commit()
 
     def md5_encrypt(self, text):
@@ -69,23 +74,30 @@ class Mysql():
         msg.update(text.encode('utf-8'))
         return msg.hexdigest()
 
+    def userExist(self, userName):
+        result = self.__query('user', 'user_name', conditions={'user_name': f'{userName}'})
+        if len(result) == 0:
+            return False
+        elif result[0][0] == userName:
+            return True
+        
     def verifyPassword(self, userName):
-        test = f"user_name = '{userName}'"
-        self.cursor.execute(f"SELECT user_password FROM user WHERE {test}")
-        result = self.cursor.fetchone()
-        return result[0]
-    
+        pass
+
     def addUser(self, userName, password):
-        if self.__query('user', 'user_name', user_name = f'{userName}'):
+        if self.__query('user', {'user_name': f'{userName}', 'user_password': f'{self.md5_encrypt(f"{password}")}'}):
             print('用户存在')
         else:
             passwordMd5 = self.md5_encrypt(password)
-            self.__insert('user', user_name = userName, user_password = passwordMd5)
+            self.__insert('user', {'user_name': f'{userName}', 'user_password': f'{passwordMd5}'})
             self.connection.commit()
+        
+    def password(self, userName, password):
+        passwordMd5 = self.md5_encrypt(password)
+        self.__update('user', {'user_password': f'{passwordMd5}'}, {'user_name':f'{userName}'})
     
     def test(self):
-        result = self.__query('user', 'user_name', user_id = 1, user_name = 'admin')
-        print(result)
+        pass
 
 if __name__ == "__main__":
     sql = Mysql()
