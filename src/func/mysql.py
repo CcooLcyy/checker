@@ -16,22 +16,24 @@ class Mysql():
                 self.cursor = self.connection.cursor()
             self.verifyPassword('admin')
         except TypeError:
-                self.__insert('user', user_id = 1, user_name = 'admin', user_password = 'admin')
+                self.__insert('user', user_id = 1, user_name = 'admin', user_password = self.md5_encrypt('admin'))
+                self.__init__()
         except Exception as e:
             if e.args[0] == 2003:
                 self.installed = False
             elif e.args[0] == 1146:
                 self.__createTable('user', user_id = 'INT(32) NOT NULL AUTO_INCREMENT PRIMARY KEY', user_name = 'CHAR(32) NOT NULL', user_password = 'CHAR(32) NOT NULL')
+            self.__init__()
 
     def __del__(self):
         self.cursor.close()
         self.connection.close()
 
-    def __installMysql(self):
-        installPath = self.file.selectDirPath()
-        zipPath = 'res/mysql-5.7.41-winx64.zip'
-        with zipfile.ZipFile(zipPath, 'r') as zip_ref:
-            zip_ref.extractall(installPath)
+    # def installMysql(self):
+    #     installPath = self.file.selectDirPath()
+    #     zipPath = 'res/mysql-5.7.41-winx64.zip'
+    #     with zipfile.ZipFile(zipPath, 'r') as zip_ref:
+    #         zip_ref.extractall(installPath)
 
     def __insert(self, tableName, **keyValue):
         columns = ', '.join(keyValue.keys())
@@ -78,8 +80,9 @@ class Mysql():
         self.__insert('user', user_name = userName, user_password = passwordMd5)
         self.connection.commit()
     
-    # def test(self):
+    def test(self):
+        print('test')
 
 if __name__ == "__main__":
     sql = Mysql()
-    # sql.test()
+    sql.addUser('test', 'test')
