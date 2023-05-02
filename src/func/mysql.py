@@ -82,7 +82,8 @@ class Mysql():
             return True
         
     def verifyPassword(self, userName):
-        pass
+        result = self.__query('user', 'user_password', conditions={'user_name': f'{userName}'})
+        print(result[0][0])
 
     def addUser(self, userName, password):
         if self.__query('user', {'user_name': f'{userName}', 'user_password': f'{self.md5_encrypt(f"{password}")}'}):
@@ -101,4 +102,3 @@ class Mysql():
 
 if __name__ == "__main__":
     sql = Mysql()
-    sql.test()

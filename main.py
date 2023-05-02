@@ -1,6 +1,6 @@
 from PyQt5 import QtWidgets, uic, QtCore
 from PyQt5.QtGui import QPixmap
-import sys, os, hashlib
+import sys, os
 sys.path.append('src')
 from func.data import Data
 from func.file import File
@@ -161,12 +161,16 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
         self.mainwindow = VoidWindow()
         self.sql = Mysql()
 
-        # if self.sql.installed == False:
-        reply = QtWidgets.QMessageBox.question(self, '警告！', '未安装数据库是否安装？', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
-        if reply == QtWidgets.QMessageBox.Yes:
-            pass
-        elif reply == QtWidgets.QMessageBox.No:
-            exit()
+        self.show()
+        if self.sql.installed == False:
+            reply = QtWidgets.QMessageBox.question(self, '警告！', '未安装数据库是否安装？', QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No, QtWidgets.QMessageBox.No)
+            if reply == QtWidgets.QMessageBox.Yes:
+                QtWidgets.QMessageBox.information(self, '提示', '请选择安装位置！')
+                # self.sql.installMysql()
+                # 安装数据库流程
+                QtWidgets.QMessageBox.information(self, '提示', '安装完成，请登录')
+            elif reply == QtWidgets.QMessageBox.No:
+                exit()
 
         self.loginButton.clicked.connect(self.loginSlot)
         self.cancelButton.clicked.connect(self.close)
@@ -174,20 +178,14 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
     def loginSlot(self):
         userName = self.userNameEdit.text()
         password = self.passwordEdit.text()
-        passwordMd5 = self.md5_encrypt(password)
-        if userName == 'admin' and passwordMd5 == '21232f297a57a5a743894a0e4a801fc3':
+        passwordMd5 = self.sql.md5_encrypt(password)
+
+        if passwordMd5 == self.sql.verifyPassword(userName):
             self.close()
-            self.mainwindow.show()
         elif userName == '' or password == '':
             QtWidgets.QMessageBox.information(self, '警告！', '请输入账号密码！')
-        else:
+        elif passwordMd5 != self.sql.verifyPassword(userName):
             QtWidgets.QMessageBox.information(self, '警告！', '账号或密码错误')
-
-    def md5_encrypt(self, text):
-        msg = hashlib.md5()
-        msg.update(text.encode('utf-8'))
-
-        return msg.hexdigest()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
