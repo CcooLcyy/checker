@@ -20,6 +20,8 @@ class Mysql():
         except Exception as e:
             if e.args[0] == 2003:
                 self.installed = False
+            elif e.args[0] == 1146:
+                self.__createTable('user', user_id = 'INT(32) NOT NULL AUTO_INCREMENT PRIMARY KEY', user_name = 'CHAR(32) NOT NULL', user_password = 'CHAR(32) NOT NULL')
 
     def __del__(self):
         self.cursor.close()
@@ -31,28 +33,34 @@ class Mysql():
         with zipfile.ZipFile(zipPath, 'r') as zip_ref:
             zip_ref.extractall(installPath)
 
-    def __insert(self, tableName, **kwargs):
-        columns = ', '.join(kwargs.keys())
-        placeholders = ', '.join(['%s'] * len(kwargs))
-        values = tuple(kwargs.values())
+    def __insert(self, tableName, **keyValue):
+        columns = ', '.join(keyValue.keys())
+        placeholders = ', '.join(['%s'] * len(keyValue))
+        values = tuple(keyValue.values())
         insert = f"INSERT INTO {tableName} ({columns}) VALUES ({placeholders})"
         self.cursor.execute(insert, values)
         self.connection.commit()
 
-    def __query(self, tableName, *args, **kwargs):
-        columns = ', '.join(args)
-        if len(kwargs) != 0:
-            condition = 'AND'.join(f"{key}='{value}'"for key, value in kwargs.items())
+    def __query(self, tableName, *columnName, **conditionName):
+        columns = ', '.join(columnName)
+        if len(conditionName) != 0:
+            condition = 'AND'.join(f"{key}='{value}'"for key, value in conditionName.items())
             query = f"SELECT {columns} FROM {tableName} WHERE {condition}"
             self.cursor.execute(query)
             result = self.cursor.fetchall()
             return result
         else:
-            # condition = 'AND'.join(f"{key}='{value}'"for key, value in kwargs.items())
             query = f"SELECT {columns} FROM {tableName}"
             self.cursor.execute(query)
             result = self.cursor.fetchall()
             return result
+    
+    def __createTable(self, tableName, **tableColumns):
+        columns = ', '.join([f"{column} NOT NULL" for column in tableColumns.values()])
+        variables = ', '.join(f"{columnName}" for columnName in tableColumns.keys())
+        result = ', '.join([f"{var} {column}" for var, column in zip(variables.split(', '), columns.split(', '))])
+        self.cursor.execute(f"CREATE TABLE {tableName}({result})")
+        self.connection.commit()
 
     def md5_encrypt(self, text):
         msg = hashlib.md5()
@@ -70,10 +78,8 @@ class Mysql():
         self.__insert('user', user_name = userName, user_password = passwordMd5)
         self.connection.commit()
     
-    def test(self):
-        result = self.__query('user', '*')
-        print(result)
+    # def test(self):
 
 if __name__ == "__main__":
     sql = Mysql()
-    sql.test()
+    # sql.test()
