@@ -8,6 +8,7 @@ from func.mysql import Mysql
 from ui.ui_mainWindow import Ui_mainWindow
 from ui.ui_dataWindow import Ui_dataPageWindow
 from ui.ui_loginWindow import Ui_loginWindow
+from ui.ui_manageWindow import Ui_manageWindow
 
 class MainWindow(QtWidgets.QWidget, Ui_mainWindow):
     toDataWindowSignal = QtCore.pyqtSignal()
@@ -15,6 +16,7 @@ class MainWindow(QtWidgets.QWidget, Ui_mainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
+        
         self.toDataWindowButton.clicked.connect(self.toDataWindowSlot)
         self.changeUserButton.clicked.connect(self.toLoginWindowSlot)
 
@@ -127,7 +129,7 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
                             qImg = self.data.imageShow(self.imagePath[self.imageCount])
                             self.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
 
-class VoidWindow(QtWidgets.QMainWindow):
+class VoidMainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -154,11 +156,45 @@ class VoidWindow(QtWidgets.QMainWindow):
         self.loginWindow = LoginWindow()
         self.loginWindow.show()
 
+class ManageWindow(QtWidgets.QWidget, Ui_manageWindow):
+    toLoginWindowSignal = QtCore.pyqtSignal()
+    def __init__(self):
+        super().__init__()
+        self.setupUi(self)
+        self.sql = Mysql()
+
+        self.changeUserButton.clicked.connect(self.changeUserSlot)
+        self.addUserButton.clicked.connect(self.addUserSlot)
+
+    def changeUserSlot(self):
+        self.toLoginWindowSignal.emit()
+    
+    def addUserSlot(self):
+        self.sql.addUser()
+
+class VoidManageWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.stackedWidget = QtWidgets.QStackedWidget(self)
+        self.setCentralWidget(self.stackedWidget)
+
+        self.manageWindow = ManageWindow()
+        self.stackedWidget.addWidget(self.manageWindow)
+
+        self.manageWindow.toLoginWindowSignal.connect(self.toLoginWindowSlot)
+
+    def toLoginWindowSlot(self):
+        self.close()
+        self.loginWindow = LoginWindow()
+        self.loginWindow.show()
+
 class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.mainwindow = VoidWindow()
+        self.mainwindow = VoidMainWindow()
+        self.manageWindow = VoidManageWindow()
         self.sql = Mysql()
 
         self.show()
@@ -179,13 +215,16 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
         userName = self.userNameEdit.text()
         password = self.passwordEdit.text()
         passwordMd5 = self.sql.md5_encrypt(password)
-
-        if passwordMd5 == self.sql.verifyPassword(userName):
-            self.close()
-        elif userName == '' or password == '':
+        if userName == '' or password == '':
             QtWidgets.QMessageBox.information(self, '警告！', '请输入账号密码！')
         elif passwordMd5 != self.sql.verifyPassword(userName):
             QtWidgets.QMessageBox.information(self, '警告！', '账号或密码错误')
+        elif userName == 'admin' and passwordMd5 == self.sql.verifyPassword(userName):
+            self.close()
+            self.manageWindow.show()
+        elif passwordMd5 == self.sql.verifyPassword(userName):
+            self.close()
+            self.mainwindow.show()
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

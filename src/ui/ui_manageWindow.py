@@ -15,10 +15,27 @@ class Ui_manageWindow(object):
     def setupUi(self, manageWindow):
         manageWindow.setObjectName("manageWindow")
         manageWindow.resize(1000, 800)
+        manageWindow.setMinimumSize(QtCore.QSize(1000, 800))
+        manageWindow.setMaximumSize(QtCore.QSize(1000, 800))
         self.gridLayout_2 = QtWidgets.QGridLayout(manageWindow)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName("gridLayout")
+        self.changeUserButton = QtWidgets.QPushButton(manageWindow)
+        self.changeUserButton.setObjectName("changeUserButton")
+        self.gridLayout.addWidget(self.changeUserButton, 0, 0, 1, 1)
+        self.gridLayout_3 = QtWidgets.QGridLayout()
+        self.gridLayout_3.setObjectName("gridLayout_3")
+        self.lineEdit = QtWidgets.QLineEdit(manageWindow)
+        self.lineEdit.setObjectName("lineEdit")
+        self.gridLayout_3.addWidget(self.lineEdit, 1, 0, 1, 1)
+        self.addUserButton = QtWidgets.QPushButton(manageWindow)
+        self.addUserButton.setObjectName("addUserButton")
+        self.gridLayout_3.addWidget(self.addUserButton, 3, 0, 1, 1)
+        self.lineEdit_2 = QtWidgets.QLineEdit(manageWindow)
+        self.lineEdit_2.setObjectName("lineEdit_2")
+        self.gridLayout_3.addWidget(self.lineEdit_2, 2, 0, 1, 1)
+        self.gridLayout.addLayout(self.gridLayout_3, 1, 0, 1, 1)
         self.gridLayout_2.addLayout(self.gridLayout, 0, 0, 1, 1)
 
         self.retranslateUi(manageWindow)
@@ -27,3 +44,5 @@ class Ui_manageWindow(object):
     def retranslateUi(self, manageWindow):
         _translate = QtCore.QCoreApplication.translate
         manageWindow.setWindowTitle(_translate("manageWindow", "管理界面"))
+        self.changeUserButton.setText(_translate("manageWindow", "切换用户"))
+        self.addUserButton.setText(_translate("manageWindow", "添加用户"))
