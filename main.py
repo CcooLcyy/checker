@@ -188,8 +188,11 @@ class ManageWindow(QtWidgets.QWidget, Ui_manageWindow):
     def changeUserPasswordSlot(self):
         userName = self.changeUserNameEdit.text()
         userPassword = self.changeUserPasswordEdit.text()
-        infoShow = self.sql.changePassword(userName, userPassword)
-        self.manageInfoShow.appendPlainText(infoShow)
+        if userName == '':
+            self.manageInfoShow.appendPlainText('请正确输入用户名密码！')
+        else:
+            infoShow = self.sql.changePassword(userName, userPassword)
+            self.manageInfoShow.appendPlainText(infoShow)
 
     def queryAllUserSlot(self):
         result = self.sql.queryAllUser()
@@ -201,6 +204,8 @@ class ManageWindow(QtWidgets.QWidget, Ui_manageWindow):
         if deleteUserName == 'admin':
             self.manageInfoShow.appendPlainText('无法删除“admin”用户！')
             self.deleteUserEdit.clear()
+        elif deleteUserName == '':
+            self.manageInfoShow.appendPlainText('请正确输入待删除用户')
         else:
             self.sql.deleteUser(deleteUserName)
             self.manageInfoShow.appendPlainText(f'用户：{deleteUserName}已删除')
