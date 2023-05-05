@@ -132,6 +132,8 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
 class VoidMainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
+        self.setWindowTitle('主界面')
+        self.resize(1000, 800)
 
         self.stackedWidget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stackedWidget)
@@ -165,17 +167,47 @@ class ManageWindow(QtWidgets.QWidget, Ui_manageWindow):
 
         self.changeUserButton.clicked.connect(self.changeUserSlot)
         self.addUserButton.clicked.connect(self.addUserSlot)
+        self.clearManageInfoShowButton.clicked.connect(self.manageInfoShow.clear)
+        self.changePasswordButton.clicked.connect(self.changeUserPasswordSlot)
+        self.queryUserButton.clicked.connect(self.queryAllUserSlot)
+        self.deleteUserButton.clicked.connect(self.deleteUserSlot)
 
     def changeUserSlot(self):
         self.toLoginWindowSignal.emit()
     
     def addUserSlot(self):
-        self.sql.addUser()
+        userName = self.addUserNameEdit.text()
+        userPassword = self.addUserPasswordEdit.text()
+        if userName == '':
+            self.manageInfoShow.appendPlainText('请输入用户名')
+        else:
+            show = self.sql.addUser(userName, userPassword)
+            self.manageInfoShow.appendPlainText(show)
+
+    def changeUserPasswordSlot(self):
+        userName = self.changeUserNameEdit.text()
+        userPassword = self.changeUserPasswordEdit.text()
+        infoShow = self.sql.changePassword(userName, userPassword)
+        self.manageInfoShow.appendPlainText(infoShow)
+
+    def queryAllUserSlot(self):
+        result = self.sql.queryAllUser()
+        for _ in result:
+            self.manageInfoShow.appendPlainText(f'{_[0]}')
+    
+    def deleteUserSlot(self):
+        deleteUserName = self.deleteUserEdit.text()
+        self.sql.deleteUser(deleteUserName)
+        self.manageInfoShow.appendPlainText(f'用户：{deleteUserName}已删除')
+
+
 
 class VoidManageWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.setWindowTitle('管理界面')
+        self.resize(1000, 800)
         self.stackedWidget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stackedWidget)
 
