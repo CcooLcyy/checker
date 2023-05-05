@@ -171,6 +171,7 @@ class ManageWindow(QtWidgets.QWidget, Ui_manageWindow):
         self.changePasswordButton.clicked.connect(self.changeUserPasswordSlot)
         self.queryUserButton.clicked.connect(self.queryAllUserSlot)
         self.deleteUserButton.clicked.connect(self.deleteUserSlot)
+        self.deleteUserButton.clicked.connect(self.deleteUserEdit.clear)
 
     def changeUserSlot(self):
         self.toLoginWindowSignal.emit()
@@ -197,8 +198,12 @@ class ManageWindow(QtWidgets.QWidget, Ui_manageWindow):
     
     def deleteUserSlot(self):
         deleteUserName = self.deleteUserEdit.text()
-        self.sql.deleteUser(deleteUserName)
-        self.manageInfoShow.appendPlainText(f'用户：{deleteUserName}已删除')
+        if deleteUserName == 'admin':
+            self.manageInfoShow.appendPlainText('无法删除“admin”用户！')
+            self.deleteUserEdit.clear()
+        else:
+            self.sql.deleteUser(deleteUserName)
+            self.manageInfoShow.appendPlainText(f'用户：{deleteUserName}已删除')
 
 
 
