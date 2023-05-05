@@ -42,7 +42,7 @@ class Mysql():
         self.cursor.execute(insert, values)
         self.connection.commit()
 
-    def __query(self, table_name, *column_names, conditions=None):
+    def __query(self, table_name, conditions=None, *column_names):
         columns_str = ', '.join(column_names)
         if conditions:
             conditions_str = ' AND '.join([f"{key} = %s" for key in conditions.keys()])
@@ -75,23 +75,23 @@ class Mysql():
         return msg.hexdigest()
 
     def userExist(self, userName):
-        result = self.__query('user', 'user_name', conditions={'user_name': f'{userName}'})
+        result = self.__query('user', {'user_name': f'{userName}'}, 'user_name')
         if len(result) == 0:
             return False
         elif result[0][0] == userName:
             return True
         
     def verifyPassword(self, userName):
-        result = self.__query('user', 'user_password', conditions={'user_name': f'{userName}'})
-        print(result[0][0])
+        result = self.__query('user', {'user_name': f'{userName}'}, 'user_password')
+        if len(result) != 0:
+            return result[0][0]
 
     def addUser(self, userName, password):
-        if self.__query('user', {'user_name': f'{userName}', 'user_password': f'{self.md5_encrypt(f"{password}")}'}):
+        passwordMd5 = self.md5_encrypt(password)
+        if self.__query('user', {'user_name': f'{userName}', 'user_password': f'{passwordMd5}'}, 'user_name'):
             print('用户存在')
         else:
-            passwordMd5 = self.md5_encrypt(password)
             self.__insert('user', {'user_name': f'{userName}', 'user_password': f'{passwordMd5}'})
-            self.connection.commit()
         
     def password(self, userName, password):
         passwordMd5 = self.md5_encrypt(password)
@@ -102,3 +102,4 @@ class Mysql():
 
 if __name__ == "__main__":
     sql = Mysql()
+    sql.addUser('test', 'test')
