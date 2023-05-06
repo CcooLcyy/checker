@@ -1,5 +1,5 @@
 import pymysql, zipfile, hashlib
-from .file import File
+from file import File
 
 class Mysql():
     def __init__(self):
@@ -22,7 +22,19 @@ class Mysql():
                 self.installed = False
             elif e.args[0] == 1146:
                 self.__createTable('user', {'user_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 'user_name': 'CHAR(32)', 'user_password': 'CHAR(32)'})
+            elif e.args[0] == 1049:
+                self.connection = pymysql.connect(
+                    host='localhost',
+                    user='checker',
+                    password='password',
+                )
+                self.cursor = self.connection.cursor()
+                self.cursor.execute('CREATE DATABASE checker;')
+                self.connection.commit()
+            else:
+                print(e)
             self.__init__()
+
 
     def __del__(self):
         self.cursor.close()
