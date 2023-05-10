@@ -41,7 +41,6 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
         self.toMainWindowButton.clicked.connect(self.toMainWindowSlot)
         self.loadMarkedImageByDir.clicked.connect(self.loadMarkedImageByDirSlot)
         self.clearDataMarkOutputShowButton.clicked.connect(self.clearDataMarkOutputShowSlot)
-        self.clearDatasetCollectOutputShow.clicked.connect(self.clearDatasetCollectOutputShowSlot)
         self.saveMarkedDataset.clicked.connect(self.saveMarkedDatasetSlot)
         self.loadUnMarkedDataByDir.clicked.connect(self.loadUnMarkedDataByDirSlot)
         self.startShowUnmarkedImageButton.clicked.connect(self.startShowUnmarkedImageSlot)
@@ -85,23 +84,20 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
     def loadMarkedImageByDirSlot(self):
         path = self.data.loadMarkedImageByDir()
         if path != '':
-            self.datasetCollectOutputShow.appendPlainText('已选取文件夹：' + path)
+            self.dataMarkOutputShow.appendPlainText('已选取文件夹：' + path)
         else:
-            self.datasetCollectOutputShow.appendPlainText('未选取目录')
+            self.dataMarkOutputShow.appendPlainText('未选取目录')
     
     def clearDataMarkOutputShowSlot(self):
         self.dataMarkOutputShow.clear()
-    
-    def clearDatasetCollectOutputShowSlot(self):
-        self.datasetCollectOutputShow.clear()
    
     def saveMarkedDatasetSlot(self):
         if self.data.image == None and self.data.label == None:
-            self.datasetCollectOutputShow.appendPlainText('请先选择载入打标数据方式')
+            self.dataMarkOutputShow.appendPlainText('请先选择载入打标数据方式')
         else:
             path = self.data.saveMarkedDataset()
             if path != None:
-                self.datasetCollectOutputShow.appendPlainText('文件保存完成：' + path)
+                self.dataMarkOutputShow.appendPlainText('文件保存完成：' + path)
 
     def loadUnMarkedDataByDirSlot(self):
         self.loadImagePath = self.data.loadUnMarkedDataByDir()
@@ -209,8 +205,6 @@ class ManageWindow(QtWidgets.QWidget, Ui_manageWindow):
         else:
             self.sql.deleteUser(deleteUserName)
             self.manageInfoShow.appendPlainText(f'用户：{deleteUserName}已删除')
-
-
 
 class VoidManageWindow(QtWidgets.QMainWindow):
     def __init__(self):
