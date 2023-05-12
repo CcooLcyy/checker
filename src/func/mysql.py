@@ -1,10 +1,14 @@
 import pymysql, zipfile, hashlib
-from .file import File
+from file import File
 
 class Mysql():
     def __init__(self):
         self.file = File()
         self.user_table = 'users'
+        self.prod_table = 'products'
+        self.mat_table = 'materials'
+        self.bom_table = 'boms'
+        self.mark_table = 'marks'
         try:
             self.connection = pymysql.connect(
                 host = 'localhost',
@@ -23,6 +27,10 @@ class Mysql():
                 self.installed = False
             elif e.args[0] == 1146:
                 self.__createTable(self.user_table, {'user_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 'user_name': 'CHAR(32)', 'user_password': 'CHAR(32)'})
+                self.__createTable(self.prod_table, {'prod_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 'prod_name': 'CHAR(32)'})
+                self.__createTable(self.mat_table, {'mat_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 'mat_name': 'CHAR(32)'})
+                self.__createTable(self.bom_table, {'prod_id': 'INT(32)', 'mat_id': 'INT(32)'})
+                self.__createTable(self.mark_table, {'classed_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY' , 'mat_id': 'INT(32)', 'prod_id': 'INT(32)', 'user_id': 'INT(32)', 'mark_time': 'DATETIME', 'a_class': 'BOOL', 'b_class': 'BOOL', 'c_class': 'BOOL'})
             elif e.args[0] == 1049:
                 self.connection = pymysql.connect(
                     host='localhost',
