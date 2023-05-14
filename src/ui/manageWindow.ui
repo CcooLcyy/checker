@@ -97,6 +97,9 @@
          </item>
          <item>
           <widget class="QLineEdit" name="addUserPasswordEdit">
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
            <property name="placeholderText">
             <string>密码</string>
            </property>
@@ -110,7 +113,10 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="addUserPasswordEdit_2">
+          <widget class="QLineEdit" name="addUserPasswordReEdit">
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
            <property name="placeholderText">
             <string>重复密码</string>
            </property>
@@ -181,6 +187,9 @@
          </item>
          <item>
           <widget class="QLineEdit" name="changeUserPasswordEdit">
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
            <property name="placeholderText">
             <string>新密码</string>
            </property>
@@ -194,7 +203,10 @@
           </widget>
          </item>
          <item>
-          <widget class="QLineEdit" name="changeUserPasswordEdit_2">
+          <widget class="QLineEdit" name="changeUserPasswordReEdit">
+           <property name="echoMode">
+            <enum>QLineEdit::Password</enum>
+           </property>
            <property name="placeholderText">
             <string>重复新密码</string>
            </property>
@@ -332,6 +344,22 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>changeUserButton</tabstop>
+  <tabstop>addUserNameEdit</tabstop>
+  <tabstop>addUserPasswordEdit</tabstop>
+  <tabstop>addUserPasswordReEdit</tabstop>
+  <tabstop>addUserButton</tabstop>
+  <tabstop>changeUserNameEdit</tabstop>
+  <tabstop>changeUserPasswordEdit</tabstop>
+  <tabstop>changeUserPasswordReEdit</tabstop>
+  <tabstop>changePasswordButton</tabstop>
+  <tabstop>queryUserButton</tabstop>
+  <tabstop>deleteUserEdit</tabstop>
+  <tabstop>deleteUserButton</tabstop>
+  <tabstop>clearManageInfoShowButton</tabstop>
+  <tabstop>manageInfoShow</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

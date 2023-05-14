@@ -24,21 +24,27 @@ class ManageWindow(QtWidgets.QWidget, Ui_manageWindow):
     
     def addUserSlot(self):
         userName = self.addUserNameEdit.text()
-        userPassword = self.addUserPasswordEdit.text()
-        if userName == '':
-            self.manageInfoShow.appendPlainText('请输入用户名')
+        if self.addUserPasswordEdit.text() == self.addUserPasswordReEdit.text():
+            userPassword = self.addUserPasswordEdit.text()
+            if userName == '':
+                self.manageInfoShow.appendPlainText('请输入用户名')
+            else:
+                show = self.sql.addUser(userName, userPassword)
+                self.manageInfoShow.appendPlainText(show)
         else:
-            show = self.sql.addUser(userName, userPassword)
-            self.manageInfoShow.appendPlainText(show)
+            self.manageInfoShow.appendPlainText('两次密码输入不一致')
 
     def changeUserPasswordSlot(self):
         userName = self.changeUserNameEdit.text()
-        userPassword = self.changeUserPasswordEdit.text()
-        if userName == '':
-            self.manageInfoShow.appendPlainText('请正确输入用户名密码！')
+        if self.changeUserPasswordEdit.text() == self.changeUserPasswordReEdit.text():
+            userPassword = self.changeUserPasswordEdit.text()
+            if userName == '':
+                self.manageInfoShow.appendPlainText('请正确输入用户名密码！')
+            else:
+                infoShow = self.sql.changePassword(userName, userPassword)
+                self.manageInfoShow.appendPlainText(infoShow)
         else:
-            infoShow = self.sql.changePassword(userName, userPassword)
-            self.manageInfoShow.appendPlainText(infoShow)
+            self.manageInfoShow.appendPlainText('两次密码输入不一致')
 
     def queryAllUserSlot(self):
         result = self.sql.queryAllUser()
