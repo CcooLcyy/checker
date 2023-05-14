@@ -2,9 +2,10 @@ from PyQt5 import QtWidgets
 import sys
 sys.path.append('src')
 from func.mysql import Mysql
-from ui.mainWindow import MainWindow
-from ui.dataWindow import DataWindow
-from ui.manageWindow import ManageWindow
+from ui.uiLogic.mainWindow import MainWindow
+from ui.uiLogic.dataWindow import DataWindow
+from ui.uiLogic.manageWindow import ManageWindow
+from ui.uiLogic.prodMatManageWindow import prodMatManageWindow
 from ui.ui_loginWindow import Ui_loginWindow
 
 class VoidMainWindow(QtWidgets.QMainWindow):
@@ -19,18 +20,25 @@ class VoidMainWindow(QtWidgets.QMainWindow):
 
         self.mainWindow = MainWindow(self.userName)
         self.dataWindow = DataWindow()
+        self.prodMatManageWindow = prodMatManageWindow()
         self.stackedWidget.addWidget(self.mainWindow)
         self.stackedWidget.addWidget(self.dataWindow)
+        self.stackedWidget.addWidget(self.prodMatManageWindow)
 
         self.mainWindow.toDataWindowSignal.connect(self.toDataWindowSlot)
         self.mainWindow.toLoginWindowSignal.connect(self.toLoginWindowSlot)
+        self.mainWindow.toProductManageWindowSignal.connect(self.toProductManageWindowSlot)
         self.dataWindow.toMainWindowSignal.connect(self.toMainWindowSlot)
+        self.prodMatManageWindow.toMainWindowSignal.connect(self.toMainWindowSlot)
 
     def toMainWindowSlot(self):
         self.stackedWidget.setCurrentIndex(0)
 
     def toDataWindowSlot(self):
         self.stackedWidget.setCurrentIndex(1)
+    
+    def toProductManageWindowSlot(self):
+        self.stackedWidget.setCurrentIndex(2)
 
     def toLoginWindowSlot(self):
         self.close()
