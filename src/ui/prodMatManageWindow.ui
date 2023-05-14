@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item alignment="Qt::AlignLeft">
-    <widget class="QPushButton" name="pushButton_6">
+    <widget class="QPushButton" name="toMainWindowButton">
      <property name="text">
       <string>返回主界面</string>
      </property>
@@ -31,21 +31,21 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="createProductRowButton">
        <property name="text">
         <string>新建产品</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="deleteProductRowButton">
        <property name="text">
         <string>删除产品</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="addMatToProdButton">
        <property name="text">
         <string>向产品添加物料</string>
        </property>
@@ -67,12 +67,36 @@
     </layout>
    </item>
    <item>
-    <widget class="QTreeWidget" name="productShowListTree">
+    <widget class="QTableWidget" name="productShowTable">
+     <property name="gridStyle">
+      <enum>Qt::SolidLine</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+     <property name="cornerButtonEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="rowCount">
+      <number>0</number>
+     </property>
      <property name="columnCount">
       <number>2</number>
      </property>
-     <attribute name="headerDefaultSectionSize">
+     <attribute name="horizontalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderDefaultSectionSize">
       <number>300</number>
+     </attribute>
+     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
      </attribute>
      <column>
       <property name="text">
@@ -103,9 +127,16 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <widget class="QPushButton" name="pushButton_4">
+      <widget class="QPushButton" name="createMaterialRowButton">
        <property name="text">
         <string>新建物料</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="deleteMaterialRowButton">
+       <property name="text">
+        <string>删除物料</string>
        </property>
       </widget>
      </item>
@@ -132,12 +163,21 @@
     </layout>
    </item>
    <item>
-    <widget class="QTreeWidget" name="productShowListTree_2">
-     <property name="columnCount">
-      <number>3</number>
+    <widget class="QTableWidget" name="materialShowTable">
+     <property name="sortingEnabled">
+      <bool>true</bool>
      </property>
-     <attribute name="headerDefaultSectionSize">
-      <number>150</number>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>300</number>
+     </attribute>
+     <attribute name="horizontalHeaderHighlightSections">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+      <bool>true</bool>
+     </attribute>
+     <attribute name="horizontalHeaderStretchLastSection">
+      <bool>true</bool>
      </attribute>
      <column>
       <property name="text">
@@ -147,11 +187,6 @@
      <column>
       <property name="text">
        <string>物料名称</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>隶属产品</string>
       </property>
      </column>
     </widget>
