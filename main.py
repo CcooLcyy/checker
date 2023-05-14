@@ -8,15 +8,16 @@ from ui.manageWindow import ManageWindow
 from ui.ui_loginWindow import Ui_loginWindow
 
 class VoidMainWindow(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, userName):
         super().__init__()
         self.setWindowTitle('主界面')
         self.resize(800, 640)
+        self.userName = userName
 
         self.stackedWidget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stackedWidget)
 
-        self.mainWindow = MainWindow()
+        self.mainWindow = MainWindow(self.userName)
         self.dataWindow = DataWindow()
         self.stackedWidget.addWidget(self.mainWindow)
         self.stackedWidget.addWidget(self.dataWindow)
@@ -59,7 +60,7 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.mainwindow = VoidMainWindow()
+
         self.manageWindow = VoidManageWindow()
         self.sql = Mysql()
 
@@ -80,6 +81,7 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
     def loginSlot(self):
         userName = self.userNameEdit.text()
         password = self.passwordEdit.text()
+        self.mainwindow = VoidMainWindow(userName)
         passwordMd5 = self.sql.md5_encrypt(password)
         if userName == '' or password == '':
             QtWidgets.QMessageBox.information(self, '警告！', '请输入账号密码！')

@@ -1,5 +1,5 @@
 import pymysql, zipfile, hashlib
-from file import File
+from .file import File
 
 class Mysql():
     def __init__(self):

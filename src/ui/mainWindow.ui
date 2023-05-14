@@ -38,7 +38,7 @@
      <string>数据处理</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="productManageButton">
+   <widget class="QPushButton" name="toProductManageWindowButton">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -83,7 +83,7 @@
     <string>切换用户</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="changeUserPasswordButton">
    <property name="geometry">
     <rect>
      <x>120</x>

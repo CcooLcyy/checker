@@ -19,7 +19,6 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
         self.savePath = ''
         
         self.toMainWindowButton.clicked.connect(self.toMainWindowSlot)
-        self.loadMarkedImageByDir.clicked.connect(self.loadMarkedImageByDirSlot)
         self.clearDataMarkOutputShowButton.clicked.connect(self.clearDataMarkOutputShowSlot)
         self.saveMarkedDataset.clicked.connect(self.saveMarkedDatasetSlot)
         self.loadUnMarkedDataByDir.clicked.connect(self.loadUnMarkedDataByDirSlot)
@@ -28,7 +27,6 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
         self.AClassButton.clicked.connect(self.AClassSlot)
         self.BClassButton.clicked.connect(self.BClassSlot)
         self.CClassButton.clicked.connect(self.CClassSlot)
-        
 
     def divideRanksShow(self, mark):
         if len(self.imagePath) == 0:
