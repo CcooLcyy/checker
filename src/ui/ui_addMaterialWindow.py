@@ -11,27 +11,27 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(400, 487)
-        self.verticalLayout = QtWidgets.QVBoxLayout(Form)
+class Ui_addMaterialWindow(object):
+    def setupUi(self, addMaterialWindow):
+        addMaterialWindow.setObjectName("addMaterialWindow")
+        addMaterialWindow.resize(400, 487)
+        self.verticalLayout = QtWidgets.QVBoxLayout(addMaterialWindow)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtWidgets.QLabel(Form)
+        self.label = QtWidgets.QLabel(addMaterialWindow)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.listWidget = QtWidgets.QListWidget(Form)
+        self.listWidget = QtWidgets.QListWidget(addMaterialWindow)
         self.listWidget.setObjectName("listWidget")
         self.verticalLayout.addWidget(self.listWidget)
-        self.pushButton = QtWidgets.QPushButton(Form)
+        self.pushButton = QtWidgets.QPushButton(addMaterialWindow)
         self.pushButton.setObjectName("pushButton")
         self.verticalLayout.addWidget(self.pushButton, 0, QtCore.Qt.AlignHCenter)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(addMaterialWindow)
+        QtCore.QMetaObject.connectSlotsByName(addMaterialWindow)
 
-    def retranslateUi(self, Form):
+    def retranslateUi(self, addMaterialWindow):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "选择物料添加到产品"))
-        self.label.setText(_translate("Form", "请从下方选择物料将其添加到"))
-        self.pushButton.setText(_translate("Form", "确定"))
+        addMaterialWindow.setWindowTitle(_translate("addMaterialWindow", "选择物料添加到产品"))
+        self.label.setText(_translate("addMaterialWindow", "请从下方选择物料将其添加到"))
+        self.pushButton.setText(_translate("addMaterialWindow", "确定"))
