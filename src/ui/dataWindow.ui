@@ -6,260 +6,198 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>800</height>
+    <width>800</width>
+    <height>640</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>1000</width>
-    <height>800</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>1000</width>
-    <height>800</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>数据处理</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_5">
-   <item row="0" column="0">
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="2" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item alignment="Qt::AlignLeft">
+    <widget class="QPushButton" name="toMainWindowButton">
+     <property name="text">
+      <string>回到主页</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="2,0,1">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,20,1,1,1">
        <item>
-        <widget class="QTabWidget" name="tabChange">
-         <property name="currentIndex">
-          <number>0</number>
+        <widget class="Line" name="line_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
          </property>
-         <widget class="QWidget" name="tab_1">
-          <attribute name="title">
-           <string>数据打标</string>
-          </attribute>
-          <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0">
-            <layout class="QGridLayout" name="gridLayout" columnstretch="0,0">
-             <item row="0" column="1" rowspan="2" alignment="Qt::AlignRight|Qt::AlignTop">
-              <widget class="QPushButton" name="startShowUnmarkedImageButton">
-               <property name="text">
-                <string>开始打标</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <layout class="QHBoxLayout" name="horizontalLayout">
-               <item>
-                <widget class="QPushButton" name="qualifiedProductButton">
-                 <property name="text">
-                  <string>合格品</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="AClassButton">
-                 <property name="text">
-                  <string>A类不合格品</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="BClassButton">
-                 <property name="text">
-                  <string>B类不合格品</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QPushButton" name="CClassButton">
-                 <property name="text">
-                  <string>C类不合格品</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
-             <item row="0" column="0">
-              <layout class="QVBoxLayout" name="verticalLayout">
-               <item alignment="Qt::AlignLeft|Qt::AlignTop">
-                <widget class="QLabel" name="label">
-                 <property name="maximumSize">
-                  <size>
-                   <width>72</width>
-                   <height>12</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string>载入打标数据</string>
-                 </property>
-                </widget>
-               </item>
-               <item alignment="Qt::AlignLeft">
-                <widget class="QPushButton" name="loadUnMarkedDataByDir">
-                 <property name="text">
-                  <string>打开文件夹</string>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <spacer name="verticalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeType">
-                  <enum>QSizePolicy::Expanding</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>50</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
-             </item>
-             <item row="1" column="0" rowspan="2">
-              <widget class="QLabel" name="UnmarkedImageShow">
-               <property name="minimumSize">
-                <size>
-                 <width>400</width>
-                 <height>400</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="tab_2">
-          <attribute name="title">
-           <string>数据集收集</string>
-          </attribute>
-          <widget class="QGroupBox" name="groupBox">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>10</y>
-             <width>201</width>
-             <height>51</height>
-            </rect>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>手动打标以及保存数据集</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="loadUnMarkedDataByDir">
+           <property name="text">
+            <string>打开未打标图片文件夹</string>
            </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignVCenter">
+          <widget class="QPushButton" name="startShowUnmarkedImageButton">
+           <property name="text">
+            <string>开始打标</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="UnmarkedImageShow">
+         <property name="minimumSize">
+          <size>
+           <width>300</width>
+           <height>300</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QPushButton" name="qualifiedProductButton">
+           <property name="text">
+            <string>合格品</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="AClassButton">
+           <property name="text">
+            <string>A类不合格品</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="BClassButton">
+           <property name="text">
+            <string>B类不合格品</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="CClassButton">
+           <property name="text">
+            <string>C类不合格品</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QPushButton" name="saveMarkedDataset">
            <property name="layoutDirection">
             <enum>Qt::LeftToRight</enum>
            </property>
-           <property name="title">
-            <string>载入打标数据方式</string>
-           </property>
-           <property name="checkable">
-            <bool>false</bool>
-           </property>
-           <widget class="QPushButton" name="loadMarkedImageByDir">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>20</y>
-              <width>71</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="autoFillBackground">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string>打开文件夹</string>
-            </property>
-           </widget>
-          </widget>
-          <widget class="QPlainTextEdit" name="datasetCollectOutputShow">
-           <property name="geometry">
-            <rect>
-             <x>570</x>
-             <y>40</y>
-             <width>400</width>
-             <height>690</height>
-            </rect>
-           </property>
-           <property name="readOnly">
-            <bool>true</bool>
-           </property>
-          </widget>
-          <widget class="QGroupBox" name="groupBox_2">
-           <property name="geometry">
-            <rect>
-             <x>10</x>
-             <y>70</y>
-             <width>201</width>
-             <height>51</height>
-            </rect>
-           </property>
-           <property name="title">
-            <string>保存文件为数据集</string>
-           </property>
-           <widget class="QPushButton" name="saveMarkedDataset">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>20</y>
-              <width>75</width>
-              <height>23</height>
-             </rect>
-            </property>
-            <property name="layoutDirection">
-             <enum>Qt::LeftToRight</enum>
-            </property>
-            <property name="text">
-             <string>保存</string>
-            </property>
-           </widget>
-          </widget>
-          <widget class="QPushButton" name="clearDatasetCollectOutputShow">
-           <property name="geometry">
-            <rect>
-             <x>890</x>
-             <y>10</y>
-             <width>75</width>
-             <height>23</height>
-            </rect>
-           </property>
            <property name="text">
-            <string>清除信息</string>
+            <string>保存数据集</string>
            </property>
           </widget>
-         </widget>
-        </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>开始训练</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButton_2">
+           <property name="text">
+            <string>自动打标</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
-     <item row="0" column="1" alignment="Qt::AlignRight">
-      <widget class="QPushButton" name="clearDataMarkOutputShowButton">
-       <property name="text">
-        <string>清除信息</string>
+     <item>
+      <widget class="Line" name="line_3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
       </widget>
      </item>
-     <item row="0" column="0" rowspan="2">
-      <layout class="QHBoxLayout" name="horizontalLayout_2">
-       <item alignment="Qt::AlignLeft">
-        <widget class="QPushButton" name="toMainWindowButton">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="clearDataMarkOutputShowButton">
          <property name="text">
-          <string>回到主页</string>
+          <string>清除信息</string>
          </property>
         </widget>
        </item>
+       <item>
+        <widget class="QPlainTextEdit" name="dataMarkOutputShow"/>
+       </item>
       </layout>
-     </item>
-     <item row="1" column="1" rowspan="2" alignment="Qt::AlignRight">
-      <widget class="QPlainTextEdit" name="dataMarkOutputShow"/>
      </item>
     </layout>
    </item>

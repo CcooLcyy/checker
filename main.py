@@ -11,7 +11,7 @@ class VoidMainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle('主界面')
-        self.resize(1000, 800)
+        self.resize(800, 640)
 
         self.stackedWidget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stackedWidget)
@@ -41,7 +41,7 @@ class VoidManageWindow(QtWidgets.QMainWindow):
         super().__init__()
 
         self.setWindowTitle('管理界面')
-        self.resize(1000, 800)
+        self.resize(800, 640)
         self.stackedWidget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stackedWidget)
 
@@ -83,7 +83,7 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
         passwordMd5 = self.sql.md5_encrypt(password)
         if userName == '' or password == '':
             QtWidgets.QMessageBox.information(self, '警告！', '请输入账号密码！')
-        elif passwordMd5 != self.sql.verifyPassword(userName):
+        elif passwordMd5 != self.sql.verifyPassword(userName): 
             QtWidgets.QMessageBox.information(self, '警告！', '账号或密码错误')
         elif userName == 'admin' and passwordMd5 == self.sql.verifyPassword(userName):
             self.close()
