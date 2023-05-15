@@ -27,8 +27,8 @@ class Mysql():
                 self.installed = False
             elif e.args[0] == 1146:
                 self.__createTable(self.user_table, {'user_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 'user_name': 'CHAR(32)', 'user_password': 'CHAR(32)'})
-                self.__createTable(self.prod_table, {'prod_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 'prod_name': 'CHAR(32)'})
-                self.__createTable(self.mat_table, {'mat_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 'mat_name': 'CHAR(32)'})
+                self.__createTable(self.prod_table, {'prod_id': 'INT(32) PRIMARY KEY', 'prod_name': 'CHAR(32)'})
+                self.__createTable(self.mat_table, {'mat_id': 'INT(32) PRIMARY KEY', 'mat_name': 'CHAR(32)'})
                 self.__createTable(self.bom_table, {'prod_id': 'INT(32)', 'mat_id': 'INT(32)'})
                 self.__createTable(self.mark_table, {'classed_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY' , 'mat_id': 'INT(32)', 'prod_id': 'INT(32)', 'user_id': 'INT(32)', 'mark_time': 'DATETIME', 'a_class': 'BOOL', 'b_class': 'BOOL', 'c_class': 'BOOL'})
             elif e.args[0] == 1049:
@@ -149,9 +149,10 @@ class Mysql():
     def deleteUser(self, userName: str) -> None:
         self.__delete(self.user_table, {'user_name': f'{userName}'})
 
-
-    def test(self):
-        pass
-
-if __name__ == "__main__":
-    sql = Mysql()
+    def queryAllProduct(self):
+        result = self.__query(self.prod_table, None, '*')
+        return result
+    
+    def queryAllMaterial(self):
+        result = self.__query(self.mat_table, None, '*')
+        return result

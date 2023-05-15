@@ -137,7 +137,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QPushButton" name="pushButton_7">
+      <widget class="QPushButton" name="saveProductRowButton">
        <property name="text">
         <string>保存</string>
        </property>
@@ -228,7 +228,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
-      <widget class="QPushButton" name="pushButton_8">
+      <widget class="QPushButton" name="saveMaterialRowButton">
        <property name="text">
         <string>保存</string>
        </property>
