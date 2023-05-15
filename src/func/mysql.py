@@ -156,3 +156,17 @@ class Mysql():
     def queryAllMaterial(self):
         result = self.__query(self.mat_table, None, '*')
         return result
+
+    def delProdMatRow(self, type, value):
+        if type == 'prod':
+            self.__delete(self.prod_table, {'prod_id': f'{value}'})
+        elif type == 'mat':
+            self.__delete(self.mat_table, {'mat_id': f'{value}'})
+
+    def addProdMatRow(self, type, value):
+        if type == 'prod':
+            result = {'prod_id': value[0], 'prod_name': value[1]}
+            self.__insert(self.prod_table, result)
+        elif type == 'mat':
+            result = {'mat_id': value[0], 'mat_name': value[1]}
+            self.__insert(self.mat_table, result)
