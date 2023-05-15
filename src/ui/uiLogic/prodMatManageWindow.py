@@ -6,6 +6,7 @@ from ui.uiLogic.addMaterialWindow import AddMaterialWindow
 
 class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
     toMainWindowSignal = QtCore.pyqtSignal()
+    toDataWindowSignal = QtCore.pyqtSignal()
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -18,9 +19,13 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
         self.deleteProductRowButton.clicked.connect(self.deleteProductRowSlot)
         self.deleteMaterialRowButton.clicked.connect(self.deleteMaterialRowSlot)
         self.addMatToProdButton.clicked.connect(self.addMatToProdSlot)
+        self.toDataWindowButton.clicked.connect(self.toDataWindowSlot)
 
     def toMainWindowSlot(self):
         self.toMainWindowSignal.emit()
+
+    def toDataWindowSlot(self):
+        self.toDataWindowSignal.emit()
 
     def createProductRowSlot(self):
         row = self.productShowTable.rowCount()

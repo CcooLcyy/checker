@@ -29,7 +29,9 @@ class VoidMainWindow(QtWidgets.QMainWindow):
         self.mainWindow.toLoginWindowSignal.connect(self.toLoginWindowSlot)
         self.mainWindow.toProductManageWindowSignal.connect(self.toProductManageWindowSlot)
         self.dataWindow.toMainWindowSignal.connect(self.toMainWindowSlot)
+        self.dataWindow.toProductManageWindowSignal.connect(self.toProductManageWindowSlot)
         self.prodMatManageWindow.toMainWindowSignal.connect(self.toMainWindowSlot)
+        self.prodMatManageWindow.toDataWindowSignal.connect(self.toDataWindowSlot)
 
     def toMainWindowSlot(self):
         self.stackedWidget.setCurrentIndex(0)

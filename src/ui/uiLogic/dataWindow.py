@@ -8,6 +8,7 @@ from ui.ui_dataWindow import Ui_dataPageWindow
 
 class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
     toMainWindowSignal = QtCore.pyqtSignal()
+    toProductManageWindowSignal = QtCore.pyqtSignal()
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -19,6 +20,7 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
         self.savePath = ''
         
         self.toMainWindowButton.clicked.connect(self.toMainWindowSlot)
+        self.toProductManageWindowButton.clicked.connect(self.toProductManageWindowSlot)
         self.clearDataMarkOutputShowButton.clicked.connect(self.clearDataMarkOutputShowSlot)
         self.saveMarkedDataset.clicked.connect(self.saveMarkedDatasetSlot)
         self.loadUnMarkedDataByDir.clicked.connect(self.loadUnMarkedDataByDirSlot)
@@ -27,6 +29,12 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
         self.AClassButton.clicked.connect(self.AClassSlot)
         self.BClassButton.clicked.connect(self.BClassSlot)
         self.CClassButton.clicked.connect(self.CClassSlot)
+
+    def toMainWindowSlot(self):
+        self.toMainWindowSignal.emit()
+
+    def toProductManageWindowSlot(self):
+        self.toProductManageWindowSignal.emit()
 
     def divideRanksShow(self, mark):
         if len(self.imagePath) == 0:
@@ -56,9 +64,6 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
 
     def qualifiedProductSlot(self):
         self.divideRanksShow('pass')
-
-    def toMainWindowSlot(self):
-        self.toMainWindowSignal.emit()
 
     def loadMarkedImageByDirSlot(self):
         path = self.data.loadMarkedImageByDir()

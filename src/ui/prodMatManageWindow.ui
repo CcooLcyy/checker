@@ -14,12 +14,36 @@
    <string>产品物料管理</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <item alignment="Qt::AlignLeft">
-    <widget class="QPushButton" name="toMainWindowButton">
-     <property name="text">
-      <string>返回主界面</string>
-     </property>
-    </widget>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="toMainWindowButton">
+       <property name="text">
+        <string>返回主界面</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="toDataWindowButton">
+       <property name="text">
+        <string>数据处理</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_5">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line">
@@ -110,12 +134,29 @@
      </column>
     </widget>
    </item>
-   <item alignment="Qt::AlignLeft">
-    <widget class="QPushButton" name="pushButton_7">
-     <property name="text">
-      <string>保存</string>
-     </property>
-    </widget>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="pushButton_7">
+       <property name="text">
+        <string>保存</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="Line" name="line_2">
@@ -137,13 +178,6 @@
       <widget class="QPushButton" name="deleteMaterialRowButton">
        <property name="text">
         <string>删除物料</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_5">
-       <property name="text">
-        <string>物料打标</string>
        </property>
       </widget>
      </item>
@@ -191,12 +225,29 @@
      </column>
     </widget>
    </item>
-   <item alignment="Qt::AlignLeft">
-    <widget class="QPushButton" name="pushButton_8">
-     <property name="text">
-      <string>保存</string>
-     </property>
-    </widget>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QPushButton" name="pushButton_8">
+       <property name="text">
+        <string>保存</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

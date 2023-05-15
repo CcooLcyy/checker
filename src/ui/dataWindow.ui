@@ -14,12 +14,36 @@
    <string>数据处理</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
-   <item alignment="Qt::AlignLeft">
-    <widget class="QPushButton" name="toMainWindowButton">
-     <property name="text">
-      <string>回到主页</string>
-     </property>
-    </widget>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <widget class="QPushButton" name="toMainWindowButton">
+       <property name="text">
+        <string>返回主界面</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="toProductManageWindowButton">
+       <property name="text">
+        <string>产品管理</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="2,0,1">
