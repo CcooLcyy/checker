@@ -6,3 +6,4 @@
 
 # datasets
 datasets/*
+src/ui/uiLogic/__pycache__/*

@@ -28,6 +28,7 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
         self.delMatRow = []
         self.selectedValue = ''
         self.columnArray = []
+        self.selectRowItemText = ''
         self.__initProdRow()
         self.__initMatRow()
         self.prodRowCount = self.productShowTable.rowCount()
@@ -51,6 +52,7 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
         self.materialShowTable.itemChanged.connect(self.addMatRowSlot)
         self.productShowTable.cellDoubleClicked.connect(lambda: self.selectedValueSave(self.productShowTable))
         self.materialShowTable.cellDoubleClicked.connect(lambda: self.selectedValueSave(self.materialShowTable))
+        self.productShowTable.itemClicked.connect(self.selectRowSlot)
 
     def __initProdRow(self):
         result = self.sql.queryAllProduct()
@@ -84,7 +86,7 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
         self.__createRow('prod', self.productShowTable)
 
     def createMaterialRowSlot(self):
-        self.__createRow('mat', self.productShowTable)
+        self.__createRow('mat', self.materialShowTable)
 
     def __createRow(self, type, tableWidgetName):
         row = tableWidgetName.rowCount()
@@ -109,10 +111,6 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
             else:
                 pass
             tableWidgetName.removeRow(index.row())
-
-    def addMatToProdSlot(self):
-        self.addMatToProdWindow = AddMaterialWindow()
-        self.addMatToProdWindow.show()
 
     def addProdRowSlot(self, item):
         self.__addProdMatRow(item, self.productShowTable, self.prodRowCount, self.delProdRow, self.changeProdRow, self.addProdRow)
@@ -160,6 +158,7 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
                     else:
                         self.selectedValue = ''
                         changeRow.append(self.selectedValue)
+                        addRow.append([tableWidgetName.item(row, 0).text(), tableWidgetName.item(row, 1).text()])
                         return
 
         if rowFilled:
@@ -216,3 +215,14 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
                 item = tableWidgetName.item(row, 0)
                 if item:
                     self.columnArray.append(item.text())
+
+    def addMatToProdSlot(self):
+        if self.selectRowItemText != '':
+            self.addMatToProdWindow = AddMaterialWindow(self.selectRowItemText)
+            self.addMatToProdWindow.show()
+        else:
+            QtWidgets.QMessageBox.information(self, '提示', '请先选择一行数据')
+        
+    def selectRowSlot(self, item):
+        row = item.row()
+        self.selectRowItemText = self.productShowTable.item(row, 1).text()
