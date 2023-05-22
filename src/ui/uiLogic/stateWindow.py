@@ -22,21 +22,43 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
         self.toProdMatManageWindowButton.clicked.connect(self.toProdMatManageWindowSlot)
 
     def __initComboBox(self):
-        self.allUser = [item for subtuple in self.sql.queryAllUser() for item in subtuple]
-        self.allUser.remove('admin')
-        self.userNameComboBox.addItems(self.allUser)
+        self.__initUserNameComboBox()
+        self.__initProdNameComboBox()
+        self.__initMatNameComboBox()
+        self.__initMarkTimeComboBox()
+        self.__initClassComboBox()
 
+    def __initUserNameComboBox(self):
+        allUser = [item for subtuple in self.sql.queryAllUser() for item in subtuple]
+        allUser.remove('admin')
+        self.userNameComboBox.addItems(allUser)
+
+    def __initProdNameComboBox(self):
         self.allProd = [_ for subtuple in self.sql.queryAllProduct() for _ in subtuple]
         self.allProd = [_ for _ in self.allProd if not isinstance(_, int)]
         self.prodNameComboBox.addItems(self.allProd)
-
+    
+    def __initMatNameComboBox(self):
         self.allMat = [_ for subtuple in self.sql.queryAllMaterial() for _ in subtuple]
         self.allMat = [_ for _ in self.allMat if not isinstance(_, int)]
         self.matNameComboBox.addItems(self.allMat)
 
+    def __initMarkTimeComboBox(self):   
         self.allTime = [_.date().strftime('%Y-%m-%d') for subtuple in self.sql.queryAllTime() for _ in subtuple]
         self.allTime = set(self.allTime)
         self.markTimeComboBox.addItems(self.allTime)
+
+    def __initClassComboBox(self):
+        aMark = set([_ for subtuple in self.sql.queryAMarks() for _ in subtuple])
+        bMark = set([_ for subtuple in self.sql.queryBMarks() for _ in subtuple])
+        cMark = set([_ for subtuple in self.sql.queryCMarks() for _ in subtuple])
+        if 1 in aMark:
+            self.classComboBox.addItem('A')
+        if 1 in bMark:
+            self.classComboBox.addItem('B')
+        if 1 in cMark:
+            self.classComboBox.addItem('C')
+
 
     def toMainWindowSlot(self):
         self.toMainWindowSignal.emit()
@@ -46,52 +68,3 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
 
     def toProdMatManageWindowSlot(self):
         self.toProdMatManageWindowSignal.emit()
-
-
-    
-
-    # (
-        # (datetime.datetime(2023, 5, 21, 21, 25, 16),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 7),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 8),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 8),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 8),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 9),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 9),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 9),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 9),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 9),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 10),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 10),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 10),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 10),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 11),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 11),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 11),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 5),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 11),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 11),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 12),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 12),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 12),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 12),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 12),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 5),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 6),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 6),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 6),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 6),), 
-    #     (datetime.datetime(2023, 5, 22, 10, 4, 7),)
-    # )
-
-
-# [
-#     datetime.datetime(2023, 5, 21, 21, 25, 16), 
-#     datetime.datetime(2023, 5, 22, 10, 4, 7), 
-#     datetime.datetime(2023, 5, 22, 10, 4, 8), 
-#     datetime.datetime(2023, 5, 22, 10, 4, 8), 
-#     datetime.datetime(2023, 5, 22, 10, 4, 8), 
-#     datetime.datetime(2023, 5, 22, 10, 4, 9), 
-#     datetime.datetime(2023, 5, 22, 10, 4, 9), 
-#     datetime.datetime(2023, 5, 22, 10, 4, 9), 
-# ]

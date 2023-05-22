@@ -164,6 +164,19 @@ class Mysql():
         result = self.__query(self.mark_table, None, 'mark_time')
         return result
 
+    def queryAMarks(self):
+        return self.__queryMarksByClass('a_class')
+        
+    def queryBMarks(self):
+        return self.__queryMarksByClass('b_class')
+
+    def queryCMarks(self):
+        return self.__queryMarksByClass('c_class')
+    
+    def __queryMarksByClass(self, mark):
+        result = self.__query(self.mark_table, None, mark)
+        return result
+
     def queryProdIdByProdName(self, prodName):
         result = self.__query(self.prod_table, {'prod_name': prodName}, 'prod_id')
         return result
