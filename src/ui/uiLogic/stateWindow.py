@@ -16,6 +16,8 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
         self.sql = Mysql()
 
         self.__initComboBox()
+        self.infoTableShow.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.infoTableShow.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
 
         self.toMainWindowButton.clicked.connect(self.toMainWindowSlot)
         self.toDataWindowButton.clicked.connect(self.toDataWindowSlot)
@@ -61,7 +63,12 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
             self.classComboBox.addItem('C')
 
     def querySlot(self):
-        userName, prodId, matId, markTime, markClass = self.__queryIdByName()
+        userName, prodId, matId, markTime, markClass = self.__getCurrentText()
+        prodId = self.__queryProdIdByName()
+        matId = self.__queryMatIdByName()
+        if userName == '（用户名）' or prodId == '（产品名称）' or matId == '（物料名称）' or markTime == '（打标时间）' or markClass == '（类别）':
+            self.infoTableShow.setRowCount(0)
+            return
         if markClass == 'A':
             a, b, c = '1', '0', '0'
         elif markClass == 'B':
@@ -73,7 +80,6 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
 
         queryResult = self.sql.queryMarkByConditions(userName, prodId, matId, markTime, a, b, c)
         self.__addItemToTableWidget(queryResult)
-        # print(queryResult)
 
     def __turnToClass(self, queryResult):
         if queryResult:
@@ -97,16 +103,25 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
         markClass = self.classComboBox.currentText()
         return userName, prodName, matName, markTime, markClass
     
-    def __queryIdByName(self):
+    def __queryProdIdByName(self):
         userName, prodName, matName, markTime, markClass = self.__getCurrentText()
-        prodId = [_ for subtuple in self.sql.queryProdIdByProdName(prodName) for _ in subtuple]
-        matId = [_ for subtuple in self.sql.queryMatIdByName(matName) for _ in subtuple]
-        if prodId == None or matId == None:
-            pass
+        if prodName == '*':
+            prodId = prodName
         else:
-            prodId = prodId[0]
-            matId = matId[0]
-        return userName, prodId, matId, markTime, markClass
+            prodId = [_ for subtuple in self.sql.queryProdIdByProdName(prodName) for _ in subtuple]
+            if len(prodId) != 0:
+                prodId = prodId[0]
+        return prodId
+    
+    def __queryMatIdByName(self):
+        userName, prodName, matName, markTime, markClass = self.__getCurrentText()
+        if matName == '*':
+            matId = matName
+        else:
+            matId = [_ for subtuple in self.sql.queryMatIdByName(matName) for _ in subtuple]
+            if len(matId) != 0:
+                matId = matId[0]
+        return matId
 
     def __addItemToTableWidget(self, queryResult):
         self.infoTableShow.setRowCount(0)
@@ -127,5 +142,3 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
 
     def toProdMatManageWindowSlot(self):
         self.toProdMatManageWindowSignal.emit()
-
-
