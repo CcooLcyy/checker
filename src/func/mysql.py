@@ -181,6 +181,10 @@ class Mysql():
         result = self.__query(self.prod_table, {'prod_name': prodName}, 'prod_id')
         return result
 
+    def queryMatIdByName(self, matName):
+        result = self.__query(self.mat_table, {'mat_name': matName}, 'mat_id')
+        return result
+
     def queryBomByProdId(self, prodId):
         result = self.__query(self.bom_table, {'prod_id': prodId}, 'mat_id')
         return result
@@ -188,6 +192,9 @@ class Mysql():
     def queryMatNameByID(self, matId):
         result = self.__query(self.mat_table, {'mat_id': matId}, 'mat_name')
         return result
+
+    def queryMarkByConditions(self, userName, prodId, matId, markTime, a, b, c):
+        return self.__query(self.mark_table, {'mat_id': matId, 'prod_id': prodId, 'user_name': userName, 'DATE(mark_time)': markTime, 'a_class': a, 'b_class': b, 'c_class': c}, '*')
 
     def addProdMatRow(self, type, value):
         if type == 'prod':

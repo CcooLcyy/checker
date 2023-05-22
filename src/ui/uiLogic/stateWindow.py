@@ -20,6 +20,7 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
         self.toMainWindowButton.clicked.connect(self.toMainWindowSlot)
         self.toDataWindowButton.clicked.connect(self.toDataWindowSlot)
         self.toProdMatManageWindowButton.clicked.connect(self.toProdMatManageWindowSlot)
+        self.queryButton.clicked.connect(self.querySlot)
 
     def __initComboBox(self):
         self.__initUserNameComboBox()
@@ -43,7 +44,7 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
         self.allMat = [_ for _ in self.allMat if not isinstance(_, int)]
         self.matNameComboBox.addItems(self.allMat)
 
-    def __initMarkTimeComboBox(self):   
+    def __initMarkTimeComboBox(self):
         self.allTime = [_.date().strftime('%Y-%m-%d') for subtuple in self.sql.queryAllTime() for _ in subtuple]
         self.allTime = set(self.allTime)
         self.markTimeComboBox.addItems(self.allTime)
@@ -59,6 +60,33 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
         if 1 in cMark:
             self.classComboBox.addItem('C')
 
+    def querySlot(self):
+        userName, prodId, matId, markTime, markClass = self.__queryNameById()
+        if markClass == 'A':
+            a, b, c = '1', '0', '0'
+        elif markClass == 'B':
+            a, b, c = '0', '1', '0'
+        elif markClass == 'C':
+            a, b, c = '0', '0', '1'
+        elif markClass == '*':
+            a, b, c = '*', '*', '*'
+        result = self.sql.queryMarkByConditions(userName, prodId, matId, markTime, a, b, c)
+        print(result[0])
+
+    def __getCurrentText(self):
+        userName = self.userNameComboBox.currentText()
+        prodName = self.prodNameComboBox.currentText()
+        matName = self.matNameComboBox.currentText()
+        markTime = self.markTimeComboBox.currentText()
+        markClass = self.classComboBox.currentText()
+        return userName, prodName, matName, markTime, markClass
+    
+    def __queryNameById(self):
+        userName, prodName, matName, markTime, markClass = self.__getCurrentText()
+        prodId = [_ for subtuple in self.sql.queryProdIdByProdName(prodName) for _ in subtuple]
+        matId = [_ for subtuple in self.sql.queryMatIdByName(matName) for _ in subtuple]
+
+        return userName, prodId[0], matId[0], markTime, markClass
 
     def toMainWindowSlot(self):
         self.toMainWindowSignal.emit()
