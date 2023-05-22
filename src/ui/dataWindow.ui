@@ -24,9 +24,23 @@
       </widget>
      </item>
      <item>
+      <widget class="Line" name="line_6">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="toProductManageWindowButton">
        <property name="text">
         <string>产品管理</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="toStateWindowButton">
+       <property name="text">
+        <string>数据统计</string>
        </property>
       </widget>
      </item>
@@ -46,9 +60,9 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="2,0,1">
+    <layout class="QHBoxLayout" name="horizontalLayout_7">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,20,1,1,1">
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,0,1,0,10,1,1,1">
        <item>
         <widget class="Line" name="line_2">
          <property name="orientation">
@@ -72,7 +86,7 @@
            </property>
           </widget>
          </item>
-         <item alignment="Qt::AlignVCenter">
+         <item>
           <widget class="QPushButton" name="startShowUnmarkedImageButton">
            <property name="text">
             <string>开始打标</string>
@@ -93,6 +107,51 @@
           </spacer>
          </item>
         </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QPushButton" name="choiceProdByIdButton">
+           <property name="text">
+            <string>选择产品</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="choiceMatByIdButton">
+           <property name="text">
+            <string>选择物料</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="Line" name="line_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="UnmarkedImageShow">
@@ -211,12 +270,42 @@
      </item>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <item alignment="Qt::AlignHCenter">
-        <widget class="QPushButton" name="clearDataMarkOutputShowButton">
-         <property name="text">
-          <string>清除信息</string>
-         </property>
-        </widget>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="clearDataMarkOutputShowButton">
+           <property name="text">
+            <string>清除信息</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_6">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QPlainTextEdit" name="dataMarkOutputShow"/>

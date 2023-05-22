@@ -24,9 +24,23 @@
       </widget>
      </item>
      <item>
+      <widget class="Line" name="line_3">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="toDataWindowButton">
        <property name="text">
         <string>数据处理</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="toStateWindowButton">
+       <property name="text">
+        <string>数据统计</string>
        </property>
       </widget>
      </item>

@@ -4,23 +4,34 @@ import sys, os
 sys.path.append('src')
 from func.data import Data
 from func.file import File
+from func.mysql import Mysql
+from ui.uiLogic.selectProd import SelectProd
+from ui.uiLogic.selectMat import SelectMat
 from ui.ui_dataWindow import Ui_dataPageWindow
 
 class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
     toMainWindowSignal = QtCore.pyqtSignal()
     toProductManageWindowSignal = QtCore.pyqtSignal()
-    def __init__(self):
+    toStateWindowSingal = QtCore.pyqtSignal()
+    def __init__(self, userName, sql):
         super().__init__()
         self.setupUi(self)
         self.data = Data()
         self.file = File()
+        self.sql = sql
         self.imagePath = []
         self.imageCount = 0
         self.loadImagePath = ''
         self.savePath = ''
+        self.prodId = None
+        self.prodName = None
+        self.matId = None
+        self.matName = None
+        self.userName = userName
         
         self.toMainWindowButton.clicked.connect(self.toMainWindowSlot)
         self.toProductManageWindowButton.clicked.connect(self.toProductManageWindowSlot)
+        self.toStateWindowButton.clicked.connect(self.toStateWindowSingal)
         self.clearDataMarkOutputShowButton.clicked.connect(self.clearDataMarkOutputShowSlot)
         self.saveMarkedDataset.clicked.connect(self.saveMarkedDatasetSlot)
         self.loadUnMarkedDataByDir.clicked.connect(self.loadUnMarkedDataByDirSlot)
@@ -29,6 +40,28 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
         self.AClassButton.clicked.connect(self.AClassSlot)
         self.BClassButton.clicked.connect(self.BClassSlot)
         self.CClassButton.clicked.connect(self.CClassSlot)
+        self.choiceProdByIdButton.clicked.connect(self.choiceProdByIdSlot)
+        self.choiceMatByIdButton.clicked.connect(self.choiceMatByIdSlot)
+
+    def choiceProdByIdSlot(self):
+        self.choiceProdById = SelectProd()
+        self.choiceProdById.selectValue.connect(self.choiceProdByIdSignal)
+        self.choiceProdById.show()
+    
+    def choiceProdByIdSignal(self, id, name):
+        self.prodId = id
+        self.prodName = name
+        print(self.prodId)
+
+    def choiceMatByIdSlot(self):
+        self.choiceMatById = SelectMat()
+        self.choiceMatById.selectValue.connect(self.choiceMatByIdSignal)
+        self.choiceMatById.show()
+
+    def choiceMatByIdSignal(self, id, name):
+        self.matId = id
+        self.matName = name
+        print(self.matId)
 
     def toMainWindowSlot(self):
         self.toMainWindowSignal.emit()
@@ -36,7 +69,10 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
     def toProductManageWindowSlot(self):
         self.toProductManageWindowSignal.emit()
 
-    def divideRanksShow(self, mark):
+    def toStateWindowSlot(self):
+        self.toStateWindowSingal.emit()
+
+    def __divideRanksShow(self, mark):
         if len(self.imagePath) == 0:
             self.dataMarkOutputShow.appendPlainText('请先点击开始打标')
         else:
@@ -44,7 +80,35 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
                 self.dataMarkOutputShow.appendPlainText('图片打标已完成，请重新选择数据')
             else:
                 filePath = self.imagePath[self.imageCount]
-                self.file.renameData(filePath, self.savePath, mark)
+                classId = self.file.renameData(filePath, self.savePath, self.matName)
+                if mark == 'A':
+                    aClass = True
+                    bClass = False
+                    cClass = False
+                elif mark == 'B':
+                    aClass = False
+                    bClass = True
+                    cClass = False
+                elif mark == 'C':
+                    aClass = False
+                    bClass = False
+                    cClass = True
+                elif mark == 'pass':
+                    aClass = False
+                    bClass = False
+                    cClass = False
+                    # if self.imageCount >= len(self.imagePath):
+                    #     self.dataMarkOutputShow.appendPlainText('图片打标完成')
+                    #     self.UnmarkedImageShow.clear()
+                    # else:
+                    #     qImg = self.data.imageShow(self.imagePath[self.imageCount])
+                    #     self.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
+
+                if mark == 'pass':
+                    pass
+                else:
+                    self.sql.insertMarkData(classId, self.matId, self.prodId, self.userName, aClass, bClass, cClass)
+
                 self.imageCount += 1
                 if self.imageCount >= len(self.imagePath):
                     self.dataMarkOutputShow.appendPlainText('图片打标完成')
@@ -54,16 +118,16 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
                     self.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
 
     def CClassSlot(self):
-        self.divideRanksShow('C')
+        self.__divideRanksShow('C')
 
     def BClassSlot(self):
-        self.divideRanksShow('B')
+        self.__divideRanksShow('B')
 
     def AClassSlot(self):
-        self.divideRanksShow('A')
+        self.__divideRanksShow('A')
 
     def qualifiedProductSlot(self):
-        self.divideRanksShow('pass')
+        self.__divideRanksShow('pass')
 
     def loadMarkedImageByDirSlot(self):
         path = self.data.loadMarkedImageByDir()
@@ -95,6 +159,8 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
         self.loadImagePath = self.loadImagePath
         if self.loadImagePath == '':
             self.dataMarkOutputShow.appendPlainText('请选择未标记图片路径！')
+        elif self.matId == None or self.prodId == None:
+            QtWidgets.QMessageBox.information(self, '提示', '请先选择物料和产品')
         else:
             QtWidgets.QMessageBox.information(self, '提示', '请选择打标数据保存的路径')
             self.savePath = self.data.file.selectDirPath()

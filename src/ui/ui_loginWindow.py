@@ -18,6 +18,7 @@ class Ui_loginWindow(object):
         loginWindow.setMinimumSize(QtCore.QSize(272, 133))
         loginWindow.setMaximumSize(QtCore.QSize(272, 133))
         loginWindow.setAutoFillBackground(True)
+        loginWindow.setSizeGripEnabled(True)
         self.gridLayout = QtWidgets.QGridLayout(loginWindow)
         self.gridLayout.setObjectName("gridLayout")
         self.horizontalLayout = QtWidgets.QHBoxLayout()

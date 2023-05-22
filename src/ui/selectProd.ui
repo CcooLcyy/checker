@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>addMaterialWindow</class>
- <widget class="QWidget" name="addMaterialWindow">
+ <class>selectProd</class>
+ <widget class="QWidget" name="selectProd">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>361</width>
-    <height>467</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>选择物料添加到产品</string>
+   <string>选择产品</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <spacer name="horizontalSpacer">
+      <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -32,19 +32,12 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>请从下方选择物料将其添加到产品：</string>
+        <string>请选择产品</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="showMaterialLabel">
-       <property name="text">
-        <string>'产品名'</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_2">
+      <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -59,7 +52,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QTableWidget" name="prodAddMatTable">
+    <widget class="QTableWidget" name="prodTableShow">
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>150</number>
      </attribute>
@@ -68,12 +61,12 @@
      </attribute>
      <column>
       <property name="text">
-       <string>物料ID</string>
+       <string>产品ID</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>物料名称</string>
+       <string>产品名称</string>
       </property>
      </column>
     </widget>
@@ -81,7 +74,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
-      <spacer name="horizontalSpacer_4">
+      <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -94,14 +87,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="addToBomButton">
+      <widget class="QPushButton" name="selectProdButton">
        <property name="text">
         <string>确定</string>
        </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_3">
+      <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>

@@ -30,7 +30,7 @@ class Mysql():
                 self.__createTable(self.prod_table, {'prod_id': 'INT(32) PRIMARY KEY', 'prod_name': 'CHAR(32)'})
                 self.__createTable(self.mat_table, {'mat_id': 'INT(32) PRIMARY KEY', 'mat_name': 'CHAR(32)'})
                 self.__createTable(self.bom_table, {'prod_id': 'INT(32)', 'mat_id': 'INT(32)'})
-                self.__createTable(self.mark_table, {'classed_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY' , 'mat_id': 'INT(32)', 'prod_id': 'INT(32)', 'user_id': 'INT(32)', 'mark_time': 'DATETIME', 'a_class': 'BOOL', 'b_class': 'BOOL', 'c_class': 'BOOL'})
+                self.__createTable(self.mark_table, {'classed_id': 'CHAR(32) PRIMARY KEY' , 'mat_id': 'INT(32)', 'prod_id': 'INT(32)', 'user_name': 'CHAR(32)', 'mark_time': 'DATETIME DEFAULT CURRENT_TIMESTAMP', 'a_class': 'BOOL', 'b_class': 'BOOL', 'c_class': 'BOOL'})
             elif e.args[0] == 1049:
                 self.connection = pymysql.connect(
                     host='localhost',
@@ -39,6 +39,8 @@ class Mysql():
                 )
                 self.cursor = self.connection.cursor()
                 self.cursor.execute('CREATE DATABASE checker;')
+                self.cursor.execute('ALTER DATABASE checker CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;')
+
                 self.connection.commit()
             else:
                 print(e)
@@ -65,10 +67,10 @@ class Mysql():
     def __query(self, tableName, conditions=None, *column_names):
         columnsStr = ', '.join(column_names)
         if conditions:
-            conditionsStr = ' AND '.join([f"{key} = %s" for key in conditions.keys()])
+            conditionsStr = ' AND '.join([f"{key} = '{value}'" for key, value in conditions.items()])
             sql = f"SELECT {columnsStr} FROM {tableName} WHERE {conditionsStr}"
             values = tuple(conditions.values())
-            self.cursor.execute(sql, values)
+            self.cursor.execute(sql)
         else:
             sql = f"SELECT {columnsStr} FROM {tableName}"
             self.cursor.execute(sql)
@@ -102,10 +104,14 @@ class Mysql():
         self.cursor.execute(sql, values)
         self.connection.commit()
 
-    def __delete(self, tableName: str, condition: map) -> None:
-        conditionStr = ' AND '.join([f"{key} = %s" for key in condition.keys()])
-        sql = f"DELETE FROM {tableName} WHERE {conditionStr}"
-        value = tuple(condition.values())
+    def __delete(self, tableName, conditions=None):
+        value = ()
+        if conditions:
+            conditionStr = ' AND '.join([f"{key} = %s" for key in conditions.keys()])
+            sql = f"DELETE FROM {tableName} WHERE {conditionStr}"
+            value = tuple(conditions.values())
+        else:
+            sql = f"DELETE FROM {tableName}"
         self.cursor.execute(sql, value)
         self.connection.commit()
 
@@ -146,9 +152,6 @@ class Mysql():
         result = self.__query(self.user_table, None, 'user_name')
         return result
 
-    def deleteUser(self, userName: str) -> None:
-        self.__delete(self.user_table, {'user_name': f'{userName}'})
-
     def queryAllProduct(self):
         result = self.__query(self.prod_table, None, '*')
         return result
@@ -157,11 +160,21 @@ class Mysql():
         result = self.__query(self.mat_table, None, '*')
         return result
 
-    def delProdMatRow(self, type, value):
-        if type == 'prod':
-            self.__delete(self.prod_table, {'prod_id': f'{value}'})
-        elif type == 'mat':
-            self.__delete(self.mat_table, {'mat_id': f'{value}'})
+    def queryAllTime(self):
+        result = self.__query(self.mark_table, None, 'mark_time')
+        return result
+
+    def queryProdIdByProdName(self, prodName):
+        result = self.__query(self.prod_table, {'prod_name': prodName}, 'prod_id')
+        return result
+
+    def queryBomByProdId(self, prodId):
+        result = self.__query(self.bom_table, {'prod_id': prodId}, 'mat_id')
+        return result
+
+    def queryMatNameByID(self, matId):
+        result = self.__query(self.mat_table, {'mat_id': matId}, 'mat_name')
+        return result
 
     def addProdMatRow(self, type, value):
         if type == 'prod':
@@ -170,3 +183,22 @@ class Mysql():
         elif type == 'mat':
             result = {'mat_id': value[0], 'mat_name': value[1]}
             self.__insert(self.mat_table, result)
+
+    def addToBom(self, inserRow):
+        result = {'prod_id': inserRow[0], 'mat_id': inserRow[1]}
+        self.__insert(self.bom_table, result)
+
+    def insertMarkData(self, classId, matId, prodId, userName, aClass, bClass, cClass):
+        self.__insert(self.mark_table, {'classed_id': classId, 'mat_id':matId, 'prod_id': prodId, 'user_name': userName, 'a_class': aClass, 'b_class': bClass, 'c_class': cClass})
+
+    def deleteBomByProdId(self, prodId):
+        self.__delete(self.bom_table, {'prod_id': prodId})
+
+    def deleteUser(self, userName: str) -> None:
+        self.__delete(self.user_table, {'user_name': f'{userName}'})
+
+    def deleteProdMatRow(self, type, value):
+        if type == 'prod':
+            self.__delete(self.prod_table, {'prod_id': f'{value}'})
+        elif type == 'mat':
+            self.__delete(self.mat_table, {'mat_id': f'{value}'})

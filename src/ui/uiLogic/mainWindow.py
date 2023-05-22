@@ -8,6 +8,7 @@ class MainWindow(QtWidgets.QWidget, Ui_mainWindow):
     toDataWindowSignal = QtCore.pyqtSignal()
     toLoginWindowSignal = QtCore.pyqtSignal()
     toProductManageWindowSignal = QtCore.pyqtSignal()
+    toStateWindowSingal = QtCore.pyqtSignal()
     def __init__(self, userName):
         super().__init__()
         self.setupUi(self)
@@ -16,6 +17,7 @@ class MainWindow(QtWidgets.QWidget, Ui_mainWindow):
         
         self.toDataWindowButton.clicked.connect(self.toDataWindowSlot)
         self.toProductManageWindowButton.clicked.connect(self.toProductManageWindowSlot)
+        self.toStateWindowButton.clicked.connect(self.toStateWindowSlot)
         self.changeUserButton.clicked.connect(self.toLoginWindowSlot)
         self.changeUserPasswordButton.clicked.connect(self.changeUserPasswordSlot)
 
@@ -27,6 +29,12 @@ class MainWindow(QtWidgets.QWidget, Ui_mainWindow):
 
     def toProductManageWindowSlot(self):
         self.toProductManageWindowSignal.emit()
+    
+    def toStateWindowSlot(self):
+        self.toStateWindowSingal.emit()
+    
+    def toStateWindowSlot(self):
+        self.toStateWindowSingal.emit()
     
     def changeUserPasswordSlot(self):
         self.changeLocalUserPassword = ChangeLocalUserPassword(self.userName)

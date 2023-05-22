@@ -15,6 +15,7 @@ class OnlyNum(QtWidgets.QStyledItemDelegate):
 class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
     toMainWindowSignal = QtCore.pyqtSignal()
     toDataWindowSignal = QtCore.pyqtSignal()
+    toStateWindowSingal = QtCore.pyqtSignal()
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -41,6 +42,7 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
 
         self.toMainWindowButton.clicked.connect(self.toMainWindowSlot)
         self.toDataWindowButton.clicked.connect(self.toDataWindowSlot)
+        self.toStateWindowButton.clicked.connect(self.toStateWindowSlot)
         self.createProductRowButton.clicked.connect(self.createProductRowSlot)
         self.createMaterialRowButton.clicked.connect(self.createMaterialRowSlot)
         self.deleteProductRowButton.clicked.connect(self.deleteProductRowSlot)
@@ -82,6 +84,9 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
     def toDataWindowSlot(self):
         self.toDataWindowSignal.emit()
 
+    def toStateWindowSlot(self):
+        self.toStateWindowSingal.emit()
+
     def createProductRowSlot(self):
         self.__createRow('prod', self.productShowTable)
 
@@ -118,6 +123,28 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
     def addMatRowSlot(self, item):
         self.__addProdMatRow(item, self.materialShowTable, self.matRowCount, self.delMatRow, self.changeMatRow, self.addMatRow)
 
+    # def __addProdMatRow(self, item, tableWidgetName, rowCount, delRow, changeRow, addRow):
+    #     row = item.row()
+    #     if self.__isRowFilled(tableWidgetName, row):
+    #         self.__handleFilledRow(tableWidgetName, row, delRow, changeRow, addRow)
+    #     else:
+    #         self.__handleUnfilledRow(tableWidgetName, row)
+
+    # def __isRowFilled(self, tableWidgetName, row):
+    #     for column in range(tableWidgetName.columnCount()):
+    #         if not tableWidgetName.item(row, column):
+    #             return False
+    #     return True
+
+    # def __handleFilledRow(self, tableWidgetName, row, delRow, changeRow, addRow):
+    #     data = []
+    #     for row in range(tableWidgetName.rowCount()):
+    #         data.append(tableWidgetName.item(row, 0).text())
+    #     if len(set(data)) < len(data):
+    #         QtWidgets.QMessageBox.information(self, '警告', 'ID有重复项，请检查')
+    # def __handleUnfilledRow(self, tableWidgetName, row):
+    #     pass
+
     def __addProdMatRow(self, item, tableWidgetName, rowCount, delRow, changeRow, addRow):
         row = item.row()
         rowFilled = True
@@ -125,7 +152,7 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
             if not tableWidgetName.item(row, column):
                 rowFilled = False
                 break
-            if item.text() == '':
+            if item.text() == '': 
                 rowFilled = False
                 break
             if tableWidgetName.item(row, 0).text() in self.columnArray:
@@ -180,10 +207,18 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
         self.__saveRow('mat', self.delMatRow, self.changeMatRow, self.addMatRow, self.materialShowTable)
 
     def __saveRow(self, type, delRow, changeRow, addRow, tableWidgetName):
+        # data = []
+        # for row in range(tableWidgetName.rowCount()):
+        #     data.append(tableWidgetName.item(row, 0).text())
+        #     if len(set(data)) < len(data):
+        #         QtWidgets.QMessageBox.information(self, '警告', 'ID有重复项，请检查')
+        #         return
+        #     else:
+                
         while len(delRow) > 0:
-            self.sql.delProdMatRow(type, delRow.pop())
+            self.sql.deleteProdMatRow(type, delRow.pop())
         while len(changeRow) > 0:
-            self.sql.delProdMatRow(type, changeRow.pop())
+            self.sql.deleteProdMatRow(type, changeRow.pop())
         while len(addRow) > 0:
             try:
                 self.sql.addProdMatRow(type, addRow.pop())

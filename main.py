@@ -6,32 +6,42 @@ from ui.uiLogic.mainWindow import MainWindow
 from ui.uiLogic.dataWindow import DataWindow
 from ui.uiLogic.manageWindow import ManageWindow
 from ui.uiLogic.prodMatManageWindow import prodMatManageWindow
+from ui.uiLogic.stateWindow import StateWindow
 from ui.ui_loginWindow import Ui_loginWindow
 
 class VoidMainWindow(QtWidgets.QMainWindow):
-    def __init__(self, userName):
+    def __init__(self, userName, sql):
         super().__init__()
         self.setWindowTitle('主界面')
         self.resize(800, 640)
         self.userName = userName
+        self.sql = sql
 
         self.stackedWidget = QtWidgets.QStackedWidget(self)
         self.setCentralWidget(self.stackedWidget)
 
         self.mainWindow = MainWindow(self.userName)
-        self.dataWindow = DataWindow()
+        self.dataWindow = DataWindow(self.userName, self.sql)
         self.prodMatManageWindow = prodMatManageWindow()
+        self.stateWindow = StateWindow()
         self.stackedWidget.addWidget(self.mainWindow)
         self.stackedWidget.addWidget(self.dataWindow)
         self.stackedWidget.addWidget(self.prodMatManageWindow)
+        self.stackedWidget.addWidget(self.stateWindow)
 
         self.mainWindow.toDataWindowSignal.connect(self.toDataWindowSlot)
         self.mainWindow.toLoginWindowSignal.connect(self.toLoginWindowSlot)
         self.mainWindow.toProductManageWindowSignal.connect(self.toProductManageWindowSlot)
+        self.mainWindow.toStateWindowSingal.connect(self.toStateWindowSlot)
         self.dataWindow.toMainWindowSignal.connect(self.toMainWindowSlot)
         self.dataWindow.toProductManageWindowSignal.connect(self.toProductManageWindowSlot)
+        self.dataWindow.toStateWindowSingal.connect(self.toStateWindowSlot)
         self.prodMatManageWindow.toMainWindowSignal.connect(self.toMainWindowSlot)
         self.prodMatManageWindow.toDataWindowSignal.connect(self.toDataWindowSlot)
+        self.prodMatManageWindow.toStateWindowSingal.connect(self.toStateWindowSlot)
+        self.stateWindow.toMainWindowSignal.connect(self.toMainWindowSlot)
+        self.stateWindow.toDataWindowSignal.connect(self.toDataWindowSlot)
+        self.stateWindow.toProdMatManageWindowSignal.connect(self.toProductManageWindowSlot)
 
     def toMainWindowSlot(self):
         self.stackedWidget.setCurrentIndex(0)
@@ -41,6 +51,9 @@ class VoidMainWindow(QtWidgets.QMainWindow):
     
     def toProductManageWindowSlot(self):
         self.stackedWidget.setCurrentIndex(2)
+    
+    def toStateWindowSlot(self):
+        self.stackedWidget.setCurrentIndex(3)
 
     def toLoginWindowSlot(self):
         self.close()
@@ -71,8 +84,8 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
         super().__init__()
         self.setupUi(self)
 
-        self.manageWindow = VoidManageWindow()
         self.sql = Mysql()
+        self.manageWindow = VoidManageWindow()
 
         self.show()
         if self.sql.installed == False:
@@ -91,7 +104,7 @@ class LoginWindow(QtWidgets.QDialog, Ui_loginWindow):
     def loginSlot(self):
         userName = self.userNameEdit.text()
         password = self.passwordEdit.text()
-        self.mainwindow = VoidMainWindow(userName)
+        self.mainwindow = VoidMainWindow(userName, self.sql)
         passwordMd5 = self.sql.md5_encrypt(password)
         if userName == '' or password == '':
             QtWidgets.QMessageBox.information(self, '警告！', '请输入账号密码！')
