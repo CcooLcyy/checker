@@ -61,7 +61,7 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
             self.classComboBox.addItem('C')
 
     def querySlot(self):
-        userName, prodId, matId, markTime, markClass = self.__queryNameById()
+        userName, prodId, matId, markTime, markClass = self.__queryIdByName()
         if markClass == 'A':
             a, b, c = '1', '0', '0'
         elif markClass == 'B':
@@ -70,8 +70,24 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
             a, b, c = '0', '0', '1'
         elif markClass == '*':
             a, b, c = '*', '*', '*'
-        result = self.sql.queryMarkByConditions(userName, prodId, matId, markTime, a, b, c)
-        print(result[0])
+
+        queryResult = self.sql.queryMarkByConditions(userName, prodId, matId, markTime, a, b, c)
+        self.__addItemToTableWidget(queryResult)
+        # print(queryResult)
+
+    def __turnToClass(self, queryResult):
+        if queryResult:
+            firstList = list(queryResult[:-3])
+            lastList = list(queryResult[-3:])
+            result = lastList.index(1)
+            if result == 0:
+                firstList.append('A')
+            elif result == 1:
+                firstList.append('B')
+            elif result == 2:
+                firstList.append('C')
+
+            return firstList
 
     def __getCurrentText(self):
         userName = self.userNameComboBox.currentText()
@@ -81,12 +97,27 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
         markClass = self.classComboBox.currentText()
         return userName, prodName, matName, markTime, markClass
     
-    def __queryNameById(self):
+    def __queryIdByName(self):
         userName, prodName, matName, markTime, markClass = self.__getCurrentText()
         prodId = [_ for subtuple in self.sql.queryProdIdByProdName(prodName) for _ in subtuple]
         matId = [_ for subtuple in self.sql.queryMatIdByName(matName) for _ in subtuple]
+        if prodId == None or matId == None:
+            pass
+        else:
+            prodId = prodId[0]
+            matId = matId[0]
+        return userName, prodId, matId, markTime, markClass
 
-        return userName, prodId[0], matId[0], markTime, markClass
+    def __addItemToTableWidget(self, queryResult):
+        self.infoTableShow.setRowCount(0)
+        for oneRow in queryResult:
+            oneRow = self.__turnToClass(oneRow)
+            row = self.infoTableShow.rowCount()
+            self.infoTableShow.insertRow(row)
+            for index, value in enumerate(oneRow):
+                if type(value) == datetime.datetime:
+                    value = value.strftime('%Y-%m-%d %H:%M:%S')
+                self.infoTableShow.setItem(row, index, QtWidgets.QTableWidgetItem(value))
 
     def toMainWindowSlot(self):
         self.toMainWindowSignal.emit()
@@ -96,3 +127,5 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
 
     def toProdMatManageWindowSlot(self):
         self.toProdMatManageWindowSignal.emit()
+
+

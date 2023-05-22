@@ -180,7 +180,41 @@
       </layout>
      </item>
      <item>
-      <widget class="QTableWidget" name="infoTableShow"/>
+      <widget class="QTableWidget" name="infoTableShow">
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>125</number>
+       </attribute>
+       <column>
+        <property name="text">
+         <string>打标ID</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>物料名称</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>产品名称</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>操作用户</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>打标时间</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>类别</string>
+        </property>
+       </column>
+      </widget>
      </item>
     </layout>
    </item>

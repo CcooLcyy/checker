@@ -194,7 +194,15 @@ class Mysql():
         return result
 
     def queryMarkByConditions(self, userName, prodId, matId, markTime, a, b, c):
-        return self.__query(self.mark_table, {'mat_id': matId, 'prod_id': prodId, 'user_name': userName, 'DATE(mark_time)': markTime, 'a_class': a, 'b_class': b, 'c_class': c}, '*')
+        if markTime == '*':
+            sql = f'SELECT t1.classed_id, t2.prod_name, t3.mat_name, t1.user_name, t1.mark_time, t1.a_class, t1.b_class, t1.c_class FROM marks AS t1 LEFT JOIN products AS t2 ON t1.prod_id = t2.prod_id LEFT JOIN materials AS t3 ON t1.mat_id = t3.mat_id WHERE t1.mat_id = {matId} AND t1.prod_id = {prodId} AND t1.user_name = {userName} AND t1.a_class = {a} AND t1.b_class = {b} AND t1.c_class = {c}'            
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+        else:
+            sql = f'SELECT t1.classed_id, t2.prod_name, t3.mat_name, t1.user_name, t1.mark_time, t1.a_class, t1.b_class, t1.c_class FROM marks AS t1 LEFT JOIN products AS t2 ON t1.prod_id = t2.prod_id LEFT JOIN materials AS t3 ON t1.mat_id = t3.mat_id WHERE t1.mat_id = {matId} AND t1.prod_id = {prodId} AND t1.user_name = {userName} AND t1.a_class = {a} AND t1.b_class = {b} AND t1.c_class = {c} AND mark_time = {markTime}'            
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+        return result
 
     def addProdMatRow(self, type, value):
         if type == 'prod':
