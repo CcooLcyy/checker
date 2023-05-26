@@ -3,7 +3,7 @@
 
 # python
 **/__pycache__/
+src/ui/uiLogic/__pycache__/**
 
 # datasets
 datasets/*
-src/ui/uiLogic/__pycache__/*
