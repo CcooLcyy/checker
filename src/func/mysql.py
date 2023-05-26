@@ -1,9 +1,7 @@
-import pymysql, zipfile, hashlib
-from .file import File
+import pymysql, hashlib
 
 class Mysql():
     def __init__(self):
-        self.file = File()
         self.user_table = 'users'
         self.prod_table = 'products'
         self.mat_table = 'materials'
@@ -20,17 +18,37 @@ class Mysql():
             if self.connection != None:
                 self.cursor = self.connection.cursor()
             if not self.userExist('admin'):
-                self.__insert(self.user_table, {'user_id': '1', 'user_name': 'admin', 'user_password': f"{self.md5_encrypt('admin')}"})
+                self.__insert(self.user_table, {
+                    'user_id': '1', 
+                    'user_name': 'admin', 
+                    'user_password': f"{self.md5_encrypt('admin')}"})
                 self.__init__()
         except Exception as e:
             if e.args[0] == 2003:
                 self.installed = False
             elif e.args[0] == 1146:
-                self.__createTable(self.user_table, {'user_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 'user_name': 'CHAR(32)', 'user_password': 'CHAR(32)'})
-                self.__createTable(self.prod_table, {'prod_id': 'INT(32) PRIMARY KEY', 'prod_name': 'CHAR(32)'})
-                self.__createTable(self.mat_table, {'mat_id': 'INT(32) PRIMARY KEY', 'mat_name': 'CHAR(32)'})
-                self.__createTable(self.bom_table, {'prod_id': 'INT(32)', 'mat_id': 'INT(32)'})
-                self.__createTable(self.mark_table, {'classed_id': 'CHAR(32) PRIMARY KEY' , 'mat_id': 'INT(32)', 'prod_id': 'INT(32)', 'user_name': 'CHAR(32)', 'mark_time': 'DATETIME DEFAULT CURRENT_TIMESTAMP', 'a_class': 'BOOL', 'b_class': 'BOOL', 'c_class': 'BOOL'})
+                self.__createTable(self.user_table, {
+                    'user_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 
+                    'user_name': 'CHAR(32)', 
+                    'user_password': 'CHAR(32)'})
+                self.__createTable(self.prod_table, {
+                    'prod_id': 'INT(32) PRIMARY KEY', 
+                    'prod_name': 'CHAR(32)'})
+                self.__createTable(self.mat_table, {
+                    'mat_id': 'INT(32) PRIMARY KEY', 
+                    'mat_name': 'CHAR(32)'})
+                self.__createTable(self.bom_table, {
+                    'prod_id': 'INT(32)', 
+                    'mat_id': 'INT(32)'})
+                self.__createTable(self.mark_table, {
+                    'classed_id': 'CHAR(32) PRIMARY KEY' , 
+                    'mat_id': 'INT(32)', 
+                    'prod_id': 'INT(32)', 
+                    'user_name': 'CHAR(32)', 
+                    'mark_time': 'DATETIME DEFAULT CURRENT_TIMESTAMP', 
+                    'a_class': 'BOOL', 
+                    'b_class': 'BOOL', 
+                    'c_class': 'BOOL'})
             elif e.args[0] == 1049:
                 self.connection = pymysql.connect(
                     host='localhost',
@@ -39,8 +57,9 @@ class Mysql():
                 )
                 self.cursor = self.connection.cursor()
                 self.cursor.execute('CREATE DATABASE checker;')
-                self.cursor.execute('ALTER DATABASE checker CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;')
-
+                self.cursor.execute('ALTER DATABASE checker '
+                                    'CHARACTER SET utf8mb4 '
+                                    'COLLATE utf8mb4_general_ci;')
                 self.connection.commit()
             else:
                 print(e)
@@ -67,12 +86,16 @@ class Mysql():
     def __query(self, tableName, conditions=None, *column_names):
         columnsStr = ', '.join(column_names)
         if conditions:
-            conditionsStr = ' AND '.join([f"{key} = '{value}'" for key, value in conditions.items()])
-            sql = f"SELECT {columnsStr} FROM {tableName} WHERE {conditionsStr}"
-            values = tuple(conditions.values())
+            conditionsStr = ' AND '.join([
+                f"{key} = '{value}'" 
+                for key, value in conditions.items()])
+            sql = f"SELECT {columnsStr} \
+                FROM {tableName} \
+                WHERE {conditionsStr}"
             self.cursor.execute(sql)
         else:
-            sql = f"SELECT {columnsStr} FROM {tableName}"
+            sql = f"SELECT {columnsStr} \
+                FROM {tableName}"
             self.cursor.execute(sql)
         result = self.cursor.fetchall()
         return result
@@ -91,7 +114,9 @@ class Mysql():
         return result
 
     def __createTable(self, tableName, columns):
-        columnsStr = ', '.join([f"{columnName} {columnType}" for columnName, columnType in columns.items()])
+        columnsStr = ', '.join([
+            f"{columnName} {columnType}" 
+            for columnName, columnType in columns.items()])
         sql = f"CREATE TABLE {tableName} ({columnsStr})"
         self.cursor.execute(sql)
         self.connection.commit()
@@ -213,12 +238,6 @@ class Mysql():
 
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
-        # if markTime == '*':
-        #     sql = f'SELECT t1.classed_id, t2.prod_name, t3.mat_name, t1.user_name, t1.mark_time, t1.a_class, t1.b_class, t1.c_class FROM marks AS t1 LEFT JOIN products AS t2 ON t1.prod_id = t2.prod_id LEFT JOIN materials AS t3 ON t1.mat_id = t3.mat_id WHERE t1.mat_id = {matId} AND t1.prod_id = {prodId} AND t1.user_name = {userName} AND t1.a_class = {a} AND t1.b_class = {b} AND t1.c_class = {c}'            
-        # else:
-        #     sql = f'SELECT t1.classed_id, t2.prod_name, t3.mat_name, t1.user_name, t1.mark_time, t1.a_class, t1.b_class, t1.c_class FROM marks AS t1 LEFT JOIN products AS t2 ON t1.prod_id = t2.prod_id LEFT JOIN materials AS t3 ON t1.mat_id = t3.mat_id WHERE t1.mat_id = {matId} AND t1.prod_id = {prodId} AND t1.user_name = {userName} AND t1.a_class = {a} AND t1.b_class = {b} AND t1.c_class = {c} AND mark_time = {markTime}'            
-        #     self.cursor.execute(sql)
-        #     result = self.cursor.fetchall()
         return result
 
     def addProdMatRow(self, type, value):

@@ -5,14 +5,6 @@ from watchdog.events import FileSystemEventHandler
 import subprocess
 
 class MyHandler(FileSystemEventHandler):
-    # def on_modified(self, event):
-    #     if event.src_path.endswith('.ui'):
-    #         print(f'{event.src_path} has been modified, updating .py file')
-    #         filename, file_extension = os.path.splitext(os.path.basename(event.src_path))
-    #         output_filename = 'ui_' + filename + '.py'
-    #         output_path = os.path.join(os.path.dirname(event.src_path), output_filename)
-    #         subprocess.run(['pyuic5.exe', event.src_path, '-o', output_path])
-
     def on_moved(self, event):
         if event.dest_path.endswith('.ui'):
             print(f'{event.dest_path} has been moved, updating .py file')

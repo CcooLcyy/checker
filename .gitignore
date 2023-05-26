@@ -2,8 +2,7 @@
 .vscode/
 
 # python
-**/__pycache__/
-src/ui/uiLogic/__pycache__/**
+__pycache__/
 
 # datasets
 datasets/*

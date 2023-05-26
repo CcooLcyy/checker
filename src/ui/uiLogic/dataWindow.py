@@ -116,6 +116,7 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
                 else:
                     qImg = self.data.imageShow(self.imagePath[self.imageCount])
                     self.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
+                    self.dataMarkOutputShow.appendPlainText(filePath)
 
     def CClassSlot(self):
         self.__divideRanksShow('C')
@@ -174,3 +175,4 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
                         if len(self.imagePath) == 1:
                             qImg = self.data.imageShow(self.imagePath[self.imageCount])
                             self.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
+                            self.dataMarkOutputShow.appendPlainText(fileName)
