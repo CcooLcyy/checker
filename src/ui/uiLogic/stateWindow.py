@@ -1,7 +1,6 @@
 from PyQt5 import QtWidgets, QtCore
 import sys
 sys.path.append('src')
-from func.mysql import Mysql
 from ui.ui_stateWindow import Ui_stateWindow
 import datetime
 
@@ -9,11 +8,11 @@ class StateWindow(QtWidgets.QWidget, Ui_stateWindow):
     toMainWindowSignal = QtCore.pyqtSignal()
     toDataWindowSignal = QtCore.pyqtSignal()
     toProdMatManageWindowSignal = QtCore.pyqtSignal()
-    def __init__(self):
+    def __init__(self, sql):
         super().__init__()
         self.setupUi(self)
 
-        self.sql = Mysql()
+        self.sql = sql
 
         self.__initComboBox()
         self.infoTableShow.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)

@@ -4,7 +4,6 @@ import sys, os
 sys.path.append('src')
 from func.data import Data
 from func.file import File
-from func.mysql import Mysql
 from ui.uiLogic.selectProd import SelectProd
 from ui.uiLogic.selectMat import SelectMat
 from ui.ui_dataWindow import Ui_dataPageWindow
@@ -97,12 +96,6 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
                     aClass = False
                     bClass = False
                     cClass = False
-                    # if self.imageCount >= len(self.imagePath):
-                    #     self.dataMarkOutputShow.appendPlainText('图片打标完成')
-                    #     self.UnmarkedImageShow.clear()
-                    # else:
-                    #     qImg = self.data.imageShow(self.imagePath[self.imageCount])
-                    #     self.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
 
                 if mark == 'pass':
                     pass

@@ -1,7 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 import sys, os
 sys.path.append('src')
-from func.mysql import Mysql
 from ui.ui_prodMatManageWindow import Ui_prodMatManageWindow
 from ui.uiLogic.addMaterialWindow import AddMaterialWindow
 
@@ -16,11 +15,11 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
     toMainWindowSignal = QtCore.pyqtSignal()
     toDataWindowSignal = QtCore.pyqtSignal()
     toStateWindowSingal = QtCore.pyqtSignal()
-    def __init__(self):
+    def __init__(self, sql):
         super().__init__()
         self.setupUi(self)
 
-        self.sql = Mysql()
+        self.sql = sql
         self.addProdRow = []
         self.addMatRow = []
         self.changeProdRow = []

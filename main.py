@@ -22,8 +22,8 @@ class VoidMainWindow(QtWidgets.QMainWindow):
 
         self.mainWindow = MainWindow(self.userName)
         self.dataWindow = DataWindow(self.userName, self.sql)
-        self.prodMatManageWindow = prodMatManageWindow()
-        self.stateWindow = StateWindow()
+        self.prodMatManageWindow = prodMatManageWindow(self.sql)
+        self.stateWindow = StateWindow(self.sql)
         self.stackedWidget.addWidget(self.mainWindow)
         self.stackedWidget.addWidget(self.dataWindow)
         self.stackedWidget.addWidget(self.prodMatManageWindow)
