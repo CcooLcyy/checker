@@ -122,28 +122,6 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
     def addMatRowSlot(self, item):
         self.__addProdMatRow(item, self.materialShowTable, self.matRowCount, self.delMatRow, self.changeMatRow, self.addMatRow)
 
-    # def __addProdMatRow(self, item, tableWidgetName, rowCount, delRow, changeRow, addRow):
-    #     row = item.row()
-    #     if self.__isRowFilled(tableWidgetName, row):
-    #         self.__handleFilledRow(tableWidgetName, row, delRow, changeRow, addRow)
-    #     else:
-    #         self.__handleUnfilledRow(tableWidgetName, row)
-
-    # def __isRowFilled(self, tableWidgetName, row):
-    #     for column in range(tableWidgetName.columnCount()):
-    #         if not tableWidgetName.item(row, column):
-    #             return False
-    #     return True
-
-    # def __handleFilledRow(self, tableWidgetName, row, delRow, changeRow, addRow):
-    #     data = []
-    #     for row in range(tableWidgetName.rowCount()):
-    #         data.append(tableWidgetName.item(row, 0).text())
-    #     if len(set(data)) < len(data):
-    #         QtWidgets.QMessageBox.information(self, '警告', 'ID有重复项，请检查')
-    # def __handleUnfilledRow(self, tableWidgetName, row):
-    #     pass
-
     def __addProdMatRow(self, item, tableWidgetName, rowCount, delRow, changeRow, addRow):
         row = item.row()
         rowFilled = True
@@ -252,7 +230,7 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
 
     def addMatToProdSlot(self):
         if self.selectRowItemText != '':
-            self.addMatToProdWindow = AddMaterialWindow(self.selectRowItemText)
+            self.addMatToProdWindow = AddMaterialWindow(self.selectRowItemText, self.sql)
             self.addMatToProdWindow.show()
         else:
             QtWidgets.QMessageBox.information(self, '提示', '请先选择一行数据')

@@ -5,14 +5,14 @@ from ui.ui_addMaterialWindow import Ui_addMaterialWindow
 from func.mysql import Mysql
 
 class AddMaterialWindow(QtWidgets.QWidget, Ui_addMaterialWindow):
-    def __init__(self, prodName):
+    def __init__(self, prodName, sql):
         super().__init__()
         self.setupUi(self)
 
         self.prodAddMatTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.prodAddMatTable.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
 
-        self.sql = Mysql()
+        self.sql = sql
         self.prodName = prodName
         self.matList = []
         self.prodId = self.sql.queryProdIdByProdName(self.prodName)
@@ -30,7 +30,7 @@ class AddMaterialWindow(QtWidgets.QWidget, Ui_addMaterialWindow):
             self.prodAddMatTable.setItem(itemRow, 0, QtWidgets.QTableWidgetItem(str(row)))
             self.prodAddMatTable.setItem(itemRow, 1, QtWidgets.QTableWidgetItem(column))
             itemRow += 1
-        result = self.sql.queryBomByProdId(self.prodId)
+        result = self.sql.queryBomByProdId(self.prodId[0][0])
         self.matList = [item for sub in result for item in sub]
         for matId in self.matList:
             for row in range(self.prodAddMatTable.rowCount()):

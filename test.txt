@@ -1,0 +1,1 @@
+pyinstaller.exe --exclude-module PyQt6 main.py -p src/ -p C:\run_time\python3.10.6\lib\site-packages

@@ -1,4 +1,6 @@
-import pymysql, hashlib
+import pymysql
+import hashlib
+
 
 class Mysql():
     def __init__(self):
@@ -9,46 +11,54 @@ class Mysql():
         self.mark_table = 'marks'
         try:
             self.connection = pymysql.connect(
-                host = 'localhost',
-                user = 'checker',
-                password = 'password',
-                database = 'checker'
+                host='localhost',
+                user='checker',
+                password='password',
+                database='checker'
             )
             self.installed = True
             if self.connection != None:
                 self.cursor = self.connection.cursor()
             if not self.userExist('admin'):
                 self.__insert(self.user_table, {
-                    'user_id': '1', 
-                    'user_name': 'admin', 
+                    'user_id': '1',
+                    'user_name': 'admin',
                     'user_password': f"{self.md5_encrypt('admin')}"})
                 self.__init__()
         except Exception as e:
             if e.args[0] == 2003:
                 self.installed = False
             elif e.args[0] == 1146:
-                self.__createTable(self.user_table, {
-                    'user_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY', 
-                    'user_name': 'CHAR(32)', 
-                    'user_password': 'CHAR(32)'})
-                self.__createTable(self.prod_table, {
-                    'prod_id': 'INT(32) PRIMARY KEY', 
-                    'prod_name': 'CHAR(32)'})
+                self.__createTable(self.user_table,
+                                   {
+                                       'user_id': 'INT(32) AUTO_INCREMENT PRIMARY KEY',
+                                       'user_name': 'CHAR(32)',
+                                       'user_password': 'CHAR(32)'
+                                   },
+                                   False)
+                self.__createTable(self.prod_table,
+                                   {
+                                       'prod_id': 'INT(32) PRIMARY KEY',
+                                       'prod_name': 'CHAR(32)'
+                                   },
+                                   False)
                 self.__createTable(self.mat_table, {
-                    'mat_id': 'INT(32) PRIMARY KEY', 
-                    'mat_name': 'CHAR(32)'})
+                    'mat_id': 'INT(32) PRIMARY KEY',
+                    'mat_name': 'CHAR(32)'}, False)
                 self.__createTable(self.bom_table, {
-                    'prod_id': 'INT(32)', 
-                    'mat_id': 'INT(32)'})
-                self.__createTable(self.mark_table, {
-                    'classed_id': 'CHAR(32) PRIMARY KEY' , 
-                    'mat_id': 'INT(32)', 
-                    'prod_id': 'INT(32)', 
-                    'user_name': 'CHAR(32)', 
-                    'mark_time': 'DATETIME DEFAULT CURRENT_TIMESTAMP', 
-                    'a_class': 'BOOL', 
-                    'b_class': 'BOOL', 
-                    'c_class': 'BOOL'})
+                    'prod_id': 'INT(32)',
+                    'mat_id': 'INT(32)'}, True)
+                self.__createTable(self.mark_table,
+                                   {
+                                       'classed_id': 'CHAR(32) PRIMARY KEY',
+                                       'mat_id': 'INT(32)',
+                                       'prod_id': 'INT(32)',
+                                       'user_name': 'CHAR(32)',
+                                       'mark_time': 'DATETIME DEFAULT CURRENT_TIMESTAMP',
+                                       'a_class': 'BOOL',
+                                       'b_class': 'BOOL',
+                                       'c_class': 'BOOL'
+                                   }, True)
             elif e.args[0] == 1049:
                 self.connection = pymysql.connect(
                     host='localhost',
@@ -87,23 +97,22 @@ class Mysql():
         columnsStr = ', '.join(column_names)
         if conditions:
             conditionsStr = ' AND '.join([
-                f"{key} = '{value}'" 
+                f"{key} = '{value}'"
                 for key, value in conditions.items()])
-            sql = f"SELECT {columnsStr} \
-                FROM {tableName} \
-                WHERE {conditionsStr}"
+            sql = f"SELECT {columnsStr} FROM {tableName} WHERE {conditionsStr}"
             self.cursor.execute(sql)
         else:
-            sql = f"SELECT {columnsStr} \
-                FROM {tableName}"
+            sql = f"SELECT {columnsStr} FROM {tableName}"
             self.cursor.execute(sql)
         result = self.cursor.fetchall()
         return result
-    
+
     def __subQuery(self, tableName, subTableName, conditions=None, subConditions=None, *subColumnNames):
-        subQueryResult = ', '.join([str(x[0]) for x in self.__query(subTableName, subConditions, *subColumnNames)])
+        subQueryResult = ', '.join([str(x[0]) for x in self.__query(
+            subTableName, subConditions, *subColumnNames)])
         if conditions:
-            conditionsStr = ' AND '.join([f"{key} = %s" for key in conditions.keys()])
+            conditionsStr = ' AND '.join(
+                [f"{key} = %s" for key in conditions.keys()])
             sql = f"SELECT * FROM {tableName} WHERE {conditionsStr} AND {subColumnNames[0]} IN ({subQueryResult})"
             values = tuple(conditions.values())
             self.cursor.execute(sql, values)
@@ -113,17 +122,25 @@ class Mysql():
         result = self.cursor.fetchall()
         return result
 
-    def __createTable(self, tableName, columns):
+    def __createTable(self, tableName, columns, foreign=None):
         columnsStr = ', '.join([
-            f"{columnName} {columnType}" 
+            f"{columnName} {columnType}"
             for columnName, columnType in columns.items()])
-        sql = f"CREATE TABLE {tableName} ({columnsStr})"
+        sql = f"CREATE TABLE {tableName} ({columnsStr}"
+        if foreign:
+            sql = sql + \
+                ', FOREIGN KEY (prod_id) REFERENCES products(prod_id) ON DELETE CASCADE,'
+            sql = sql + \
+                'FOREIGN KEY (mat_id) REFERENCES materials(mat_id) ON DELETE CASCADE)'
+        else:
+            sql = sql + ')'
         self.cursor.execute(sql)
         self.connection.commit()
-    
+
     def __update(self, tableName, data, condition):
         setValues = ', '.join([f"{key} = %s" for key in data.keys()])
-        conditionStr = ' AND '.join([f"{key} = %s" for key in condition.keys()])
+        conditionStr = ' AND '.join(
+            [f"{key} = %s" for key in condition.keys()])
         sql = f"UPDATE {tableName} SET {setValues} WHERE {conditionStr}"
         values = list(data.values()) + list(condition.values())
         self.cursor.execute(sql, values)
@@ -132,7 +149,8 @@ class Mysql():
     def __delete(self, tableName, conditions=None):
         value = ()
         if conditions:
-            conditionStr = ' AND '.join([f"{key} = %s" for key in conditions.keys()])
+            conditionStr = ' AND '.join(
+                [f"{key} = %s" for key in conditions.keys()])
             sql = f"DELETE FROM {tableName} WHERE {conditionStr}"
             value = tuple(conditions.values())
         else:
@@ -146,14 +164,16 @@ class Mysql():
         return msg.hexdigest()
 
     def userExist(self, userName: str):
-        result = self.__query(self.user_table, {'user_name': f'{userName}'}, 'user_name')
+        result = self.__query(
+            self.user_table, {'user_name': f'{userName}'}, 'user_name')
         if len(result) == 0:
             return False
         elif result[0][0] == userName:
             return True
-        
+
     def verifyPassword(self, userName):
-        result = self.__query(self.user_table, {'user_name': f'{userName}'}, 'user_password')
+        result = self.__query(
+            self.user_table, {'user_name': f'{userName}'}, 'user_password')
         if len(result) != 0:
             return result[0][0]
 
@@ -162,17 +182,19 @@ class Mysql():
         if self.__query(self.user_table, {'user_name': f'{userName}', 'user_password': f'{passwordMd5}'}, 'user_name'):
             return '用户存在'
         else:
-            self.__insert(self.user_table, {'user_name': f'{userName}', 'user_password': f'{passwordMd5}'})
+            self.__insert(self.user_table, {
+                          'user_name': f'{userName}', 'user_password': f'{passwordMd5}'})
             return f'用户：{userName}添加成功，密码为：{password}'
-        
+
     def changePassword(self, userName, password):
         if not self.userExist(userName):
             return '用户不存在，请先添加用户'
         else:
             passwordMd5 = self.md5_encrypt(password)
-            self.__update(self.user_table, {'user_password': f'{passwordMd5}'}, {'user_name': f'{userName}'})
+            self.__update(self.user_table, {'user_password': f'{passwordMd5}'}, {
+                          'user_name': f'{userName}'})
             return f'用户：{userName}密码已修改为：{password}'
-    
+
     def queryAllUser(self):
         result = self.__query(self.user_table, None, 'user_name')
         return result
@@ -180,7 +202,7 @@ class Mysql():
     def queryAllProduct(self):
         result = self.__query(self.prod_table, None, '*')
         return result
-    
+
     def queryAllMaterial(self):
         result = self.__query(self.mat_table, None, '*')
         return result
@@ -191,19 +213,20 @@ class Mysql():
 
     def queryAMarks(self):
         return self.__queryMarksByClass('a_class')
-        
+
     def queryBMarks(self):
         return self.__queryMarksByClass('b_class')
 
     def queryCMarks(self):
         return self.__queryMarksByClass('c_class')
-    
+
     def __queryMarksByClass(self, mark):
         result = self.__query(self.mark_table, None, mark)
         return result
 
     def queryProdIdByProdName(self, prodName):
-        result = self.__query(self.prod_table, {'prod_name': prodName}, 'prod_id')
+        result = self.__query(
+            self.prod_table, {'prod_name': prodName}, 'prod_id')
         return result
 
     def queryMatIdByName(self, matName):
@@ -232,12 +255,16 @@ class Mysql():
                 sql += f' DATE(mark_time) = "{markTime}" AND'
             if a != '*':
                 sql += f' t1.a_class = {a} AND t1.b_class = {b} AND t1.c_class = {c}'
-        
+
         if sql[-3:] == 'AND':
             sql = sql[:-3]
 
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
+        return result
+    
+    def queryMarkByName(self, name):
+        result = self.__query(self.mark_table, {'classed_id': f'{name}'}, 'a_class', 'b_class', 'c_class')
         return result
 
     def addProdMatRow(self, type, value):
@@ -253,7 +280,8 @@ class Mysql():
         self.__insert(self.bom_table, result)
 
     def insertMarkData(self, classId, matId, prodId, userName, aClass, bClass, cClass):
-        self.__insert(self.mark_table, {'classed_id': classId, 'mat_id':matId, 'prod_id': prodId, 'user_name': userName, 'a_class': aClass, 'b_class': bClass, 'c_class': cClass})
+        self.__insert(self.mark_table, {'classed_id': classId, 'mat_id': matId, 'prod_id': prodId,
+                      'user_name': userName, 'a_class': aClass, 'b_class': bClass, 'c_class': cClass})
 
     def deleteBomByProdId(self, prodId):
         self.__delete(self.bom_table, {'prod_id': prodId})

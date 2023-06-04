@@ -4,12 +4,30 @@ from func.file import File
 import numpy as np
 import cv2
 from PyQt5.QtGui import QImage
+from matplotlib import pyplot as plt
+from sklearn.preprocessing import LabelEncoder
+from tensorflow.keras.utils import to_categorical
 
 class Data():
-    def __init__(self):
+    def __init__(self, sql):
         self.file = File()
         self.image = None
         self.label = None
+        self.sql = sql
+
+    def getImageDataFromPath(self, folderPath):
+        try:
+            imageArr = []
+            for fileName in folderPath:
+                if fileName != 'Thumbs.db':
+                # 避免将系统缩略图文件导入其中
+                    image = plt.imread(fileName)
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                    imageArr.append(image)
+            return imageArr
+        except Exception as e:
+            print(e)
+
 
     def loadMarkedImageByDir(self):
         sumImage = []
@@ -22,8 +40,20 @@ class Data():
                 if fileName != 'Thumbs.db':
                 # 避免将系统缩略图文件导入其中
                     filePath = os.path.join(folderPath, fileName)
-                    image = cv2.imread(filePath)
-                    label = np.array(os.path.splitext(fileName)[0].split('_')[0], dtype='str')
+                    image = plt.imread(filePath)
+                    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+                    
+                    label = self.sql.queryMarkByName(fileName.split('.')[0])
+                    if len(label) == 0:
+                        label = 'pass'
+                    else:
+                        if label[0][0] == 1:
+                            label = 'A'
+                        elif label[0][1] == 1:
+                            label = 'B'
+                        elif label[0][2] == 1:
+                            label = 'C'
+
                     sumImage.append(image)
                     sumLabel.append(label)
             self.image, self.label = sumImage, sumLabel
@@ -50,8 +80,20 @@ class Data():
         bytesPerLine = 3 * width
         qImg = QImage(image.data, width, height, bytesPerLine, QImage.Format_RGB888).rgbSwapped()
 
-        return qImg
+        return qImg, image
+    
+    def handleTrainingData(self, path):
+        data = np.load(path)
+        image, label = data['image'], data['label']
+        indices = np.arange(image.shape[0])
+        np.random.shuffle(indices)
+        image, label = image[indices], label[indices]
 
+        encoder = LabelEncoder()
+        label = encoder.fit_transform(label)
+        label = to_categorical(label)
+
+        return image, label
 
 if __name__ == '__main__':
     test = Data()
