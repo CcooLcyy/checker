@@ -1,18 +1,18 @@
 import sys
 sys.path.append('src')
+from func.mysql import Mysql
 from PyQt5 import QtWidgets, QtCore
 from ui.ui_addMaterialWindow import Ui_addMaterialWindow
-from func.mysql import Mysql
 
 class AddMaterialWindow(QtWidgets.QWidget, Ui_addMaterialWindow):
-    def __init__(self, prodName, sql):
+    def __init__(self, prodName):
         super().__init__()
         self.setupUi(self)
 
         self.prodAddMatTable.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.prodAddMatTable.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
 
-        self.sql = sql
+        self.sql = Mysql()
         self.prodName = prodName
         self.matList = []
         self.prodId = self.sql.queryProdIdByProdName(self.prodName)

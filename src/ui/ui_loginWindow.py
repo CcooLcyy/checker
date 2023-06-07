@@ -15,8 +15,7 @@ class Ui_loginWindow(object):
     def setupUi(self, loginWindow):
         loginWindow.setObjectName("loginWindow")
         loginWindow.resize(272, 133)
-        loginWindow.setMinimumSize(QtCore.QSize(272, 133))
-        loginWindow.setMaximumSize(QtCore.QSize(272, 133))
+        loginWindow.setMinimumSize(QtCore.QSize(0, 0))
         loginWindow.setAutoFillBackground(True)
         loginWindow.setSizeGripEnabled(True)
         self.gridLayout = QtWidgets.QGridLayout(loginWindow)

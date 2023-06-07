@@ -1,11 +1,11 @@
-from PyQt5 import QtWidgets
-from ui.ui_changeLocalUserPasswordWindow import Ui_changeLocalUserPassword
 import sys
 sys.path.append('src')
+from PyQt5 import QtWidgets
+from ui.ui_changeLocalUserPasswordWindow import Ui_changeLocalUserPassword
 from func.mysql import Mysql
 
 class ChangeLocalUserPassword(QtWidgets.QWidget, Ui_changeLocalUserPassword):
-    def __init__(self, userName):
+    def __init__(self, userName, sql):
         super().__init__()
         self.setupUi(self)
 

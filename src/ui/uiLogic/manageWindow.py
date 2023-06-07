@@ -6,7 +6,7 @@ from ui.ui_manageWindow import Ui_manageWindow
 
 class ManageWindow(QtWidgets.QWidget, Ui_manageWindow):
     toLoginWindowSignal = QtCore.pyqtSignal()
-    def __init__(self):
+    def __init__(self, sql):
         super().__init__()
         self.setupUi(self)
         self.sql = Mysql()

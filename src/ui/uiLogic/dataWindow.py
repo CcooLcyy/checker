@@ -1,14 +1,14 @@
 from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QPixmap
-import sys, os, io
+import sys, os
 sys.path.append('src')
 from func.data import Data
 from func.file import File
 from func.model import MeModel
+from func.mysql import Mysql
 from ui.uiLogic.selectProd import SelectProd
 from ui.uiLogic.selectMat import SelectMat
 from ui.ui_dataWindow import Ui_dataPageWindow
-from contextlib import redirect_stdout
 import numpy as np
 import time
 
@@ -46,7 +46,8 @@ class PreDictThread(QtCore.QThread):
                 mark = 'pass'
             self.markChanged.emit(mark)
             print(f'\t\t自动打标为：{mark}')
-            time.sleep(0.1)
+            time.sleep(0.05)
+
 
 class TrainingThread(QtCore.QThread):
     getModel = QtCore.pyqtSignal(object)
@@ -67,12 +68,12 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
     toMainWindowSignal = QtCore.pyqtSignal()
     toProductManageWindowSignal = QtCore.pyqtSignal()
     toStateWindowSingal = QtCore.pyqtSignal()
-    def __init__(self, userName, sql):
+    def __init__(self, userName):
         super().__init__()
         self.setupUi(self)
-        self.data = Data(sql)
+        self.data = Data()
         self.file = File()
-        self.sql = sql
+        self.sql = Mysql()
         self.imagePath = []
         self.imageCount = 0
         self.loadImagePath = ''
@@ -87,7 +88,6 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
         self.trainingThread = None
         sys.stdout = Stream(text=self.__onUpdateText)
         
-        # self.workerThread.markChanged.connect(self.onMarkChanged)
         self.toMainWindowButton.clicked.connect(self.toMainWindowSlot)
         self.toProductManageWindowButton.clicked.connect(self.toProductManageWindowSlot)
         self.toStateWindowButton.clicked.connect(self.toStateWindowSingal)
@@ -210,7 +210,9 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
             self.dataMarkOutputShow.appendPlainText('目录位置' + self.loadImagePath)
 
     def startShowUnmarkedImageSlot(self):
-        self.loadImagePath = self.loadImagePath
+        self.UnmarkedImageShow.clear()
+        self.imagePath = []
+        self.imageCount = 0
         if self.loadImagePath == '':
             self.dataMarkOutputShow.appendPlainText('请选择未标记图片路径！')
         elif self.matId == None or self.prodId == None:
@@ -227,7 +229,7 @@ class DataWindow(QtWidgets.QWidget, Ui_dataPageWindow):
                         self.imagePath.append(f'{self.loadImagePath}/{fileName}')
                         if len(self.imagePath) == 1:
                             qImg, self.image = self.data.imageShow(self.imagePath[self.imageCount])
-                            self.UnmarkedImageShow.setPixmap(QPixmap.fromImage(qImg))
+                            self.=- etPixmap(QPixmap.fromImage(qImg))
                             self.dataMarkOutputShow.appendPlainText(fileName)
 
     def __initModel(self, model):

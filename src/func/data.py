@@ -1,6 +1,7 @@
 import os, sys
 sys.path.append('src')
 from func.file import File
+from func.mysql import Mysql
 import numpy as np
 import cv2
 from PyQt5.QtGui import QImage
@@ -9,11 +10,11 @@ from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras.utils import to_categorical
 
 class Data():
-    def __init__(self, sql):
+    def __init__(self):
         self.file = File()
         self.image = None
         self.label = None
-        self.sql = sql
+        self.sql = Mysql()
 
     def getImageDataFromPath(self, folderPath):
         try:

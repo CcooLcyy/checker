@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 import sys, os
 sys.path.append('src')
+from func.mysql import Mysql
 from ui.ui_prodMatManageWindow import Ui_prodMatManageWindow
 from ui.uiLogic.addMaterialWindow import AddMaterialWindow
 
@@ -15,11 +16,11 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
     toMainWindowSignal = QtCore.pyqtSignal()
     toDataWindowSignal = QtCore.pyqtSignal()
     toStateWindowSingal = QtCore.pyqtSignal()
-    def __init__(self, sql):
+    def __init__(self):
         super().__init__()
         self.setupUi(self)
 
-        self.sql = sql
+        self.sql = Mysql()
         self.addProdRow = []
         self.addMatRow = []
         self.changeProdRow = []
@@ -184,14 +185,6 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
         self.__saveRow('mat', self.delMatRow, self.changeMatRow, self.addMatRow, self.materialShowTable)
 
     def __saveRow(self, type, delRow, changeRow, addRow, tableWidgetName):
-        # data = []
-        # for row in range(tableWidgetName.rowCount()):
-        #     data.append(tableWidgetName.item(row, 0).text())
-        #     if len(set(data)) < len(data):
-        #         QtWidgets.QMessageBox.information(self, '警告', 'ID有重复项，请检查')
-        #         return
-        #     else:
-                
         while len(delRow) > 0:
             self.sql.deleteProdMatRow(type, delRow.pop())
         while len(changeRow) > 0:
@@ -230,7 +223,7 @@ class prodMatManageWindow(QtWidgets.QWidget, Ui_prodMatManageWindow):
 
     def addMatToProdSlot(self):
         if self.selectRowItemText != '':
-            self.addMatToProdWindow = AddMaterialWindow(self.selectRowItemText, self.sql)
+            self.addMatToProdWindow = AddMaterialWindow(self.selectRowItemText)
             self.addMatToProdWindow.show()
         else:
             QtWidgets.QMessageBox.information(self, '提示', '请先选择一行数据')
